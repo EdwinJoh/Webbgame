@@ -2,7 +2,7 @@
 using Contracts;
 using Entities.Models;
 using Service.Contracts;
-using Shared.DTO;
+using SharedHelpers.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

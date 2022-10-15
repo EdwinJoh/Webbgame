@@ -1,0 +1,56 @@
+﻿@page "/login"
+@using WebbgameUi.Services.AuthService
+
+@inject IAuthService _authService
+@inject ILocalStorageService localStorage
+@inject NavigationManager _nav
+@inject AuthenticationStateProvider AutenticationStateProvider
+
+
+<h3>Login</h3>
+<PageTitle>Login</PageTitle>
+
+<EditForm Model="user" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label for="UserName">UserName</label>
+        <InputText id="UserName" @bind-Value="user.UserName" class="form-control" />
+        <ValidationMessage For="@(() => user.UserName)" />
+    </div>
+    <div class="mb-3">
+        <label for="Password">Password</label>
+        <InputText id="password" @bind-Value="user.Password" class="form-control" type="password" />
+        <ValidationMessage For="@(() => user.Password)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+
+</EditForm>
+<div class="text-danger">
+    <span>@errorMessage</span>
+</div>
+
+
+
+@code {
+    private UserForAuthenticationDto user = new UserForAuthenticationDto();
+
+    private string errorMessage = string.Empty;
+
+    private async Task HandleLogin()
+    {
+        var result = await _authService.Login(user);
+        if (result.Success)
+        {
+            errorMessage = string.Empty;
+            await localStorage.SetItemAsync("authToken", result.Data);
+            await AutenticationStateProvider.GetAuthenticationStateAsync();
+            _nav.NavigateTo("");
+        }
+        else
+        {
+            errorMessage = result.Message;
+        }
+    }
+}

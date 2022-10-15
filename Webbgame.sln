@@ -17,17 +17,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entiti
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infastructure", "Infastructure", "{949E8143-43F5-429C-ADA1-85EFAE53B23E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{E6AE0CF6-65BA-413C-A659-0624C42FF3C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{E6AE0CF6-65BA-413C-A659-0624C42FF3C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{72C59BE6-9D68-4BB5-BAA4-598D74D98AF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Contracts", "Service.Contracts\Service.Contracts.csproj", "{DC3828C0-7842-499D-833F-4F0AE01274E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Contracts", "Service.Contracts\Service.Contracts.csproj", "{DC3828C0-7842-499D-833F-4F0AE01274E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{E1FA562E-234C-4B73-960E-D5C426CB791A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{E1FA562E-234C-4B73-960E-D5C426CB791A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webbgame.Presentation", "Webbgame.Presentation\Webbgame.Presentation.csproj", "{E0C03861-F7D8-4DB9-88E5-C4A1AB5F7CC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webbgame.Presentation", "Webbgame.Presentation\Webbgame.Presentation.csproj", "{E0C03861-F7D8-4DB9-88E5-C4A1AB5F7CC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{0A23AA0A-736A-40A3-847B-E63C2C0B097B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedHelpers", "Shared\SharedHelpers.csproj", "{0A23AA0A-736A-40A3-847B-E63C2C0B097B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{237EA415-974B-4665-8B21-9FA6914C7B76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebbgameUi", "WebbgameUi\WebbgameUi.csproj", "{C5095361-7C6C-4D70-8C0E-2491826E9703}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +75,10 @@ Global
 		{0A23AA0A-736A-40A3-847B-E63C2C0B097B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A23AA0A-736A-40A3-847B-E63C2C0B097B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A23AA0A-736A-40A3-847B-E63C2C0B097B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5095361-7C6C-4D70-8C0E-2491826E9703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5095361-7C6C-4D70-8C0E-2491826E9703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5095361-7C6C-4D70-8C0E-2491826E9703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5095361-7C6C-4D70-8C0E-2491826E9703}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +93,7 @@ Global
 		{E1FA562E-234C-4B73-960E-D5C426CB791A} = {72C59BE6-9D68-4BB5-BAA4-598D74D98AF6}
 		{E0C03861-F7D8-4DB9-88E5-C4A1AB5F7CC8} = {76B21D96-4F18-4E24-8EC8-D167D67E0A17}
 		{0A23AA0A-736A-40A3-847B-E63C2C0B097B} = {72C59BE6-9D68-4BB5-BAA4-598D74D98AF6}
+		{C5095361-7C6C-4D70-8C0E-2491826E9703} = {237EA415-974B-4665-8B21-9FA6914C7B76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A5BCF199-7905-400E-8703-312ED4CF3801}

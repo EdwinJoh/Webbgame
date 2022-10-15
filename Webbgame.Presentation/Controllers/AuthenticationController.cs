@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
-using Shared.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SharedHelpers.DTO;
 using Webbgame.Presentation.ActionFilters;
 
 namespace Webbgame.Presentation.Controllers
@@ -17,7 +12,7 @@ namespace Webbgame.Presentation.Controllers
         private readonly IServiceManager _service;
         public AuthenticationController(IServiceManager service) => _service = service;
 
-        [HttpPost]
+        [HttpPost("register")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
@@ -32,6 +27,7 @@ namespace Webbgame.Presentation.Controllers
             }
             return StatusCode(201);
         }
+
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
@@ -39,11 +35,10 @@ namespace Webbgame.Presentation.Controllers
             if (!await _service.AuthenticationService.ValidateUser(user))
                 return Unauthorized();
 
-            return Ok(
-                new
-                {
-                    Token = await _service.AuthenticationService.CreateToken()
-                });
+            var tokenDto = await _service.AuthenticationService.CreateToken(populateExp: true);
+
+            return Ok(tokenDto);
+
         }
     }
 }

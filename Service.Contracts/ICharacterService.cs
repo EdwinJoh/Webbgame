@@ -1,5 +1,5 @@
 ﻿using Entities.Models;
-using Shared.DTO;
+using SharedHelpers.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

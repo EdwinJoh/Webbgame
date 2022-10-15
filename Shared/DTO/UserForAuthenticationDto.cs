@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.DTO
+namespace SharedHelpers.DTO
 {
     public record UserForAuthenticationDto
     {
         [Required(ErrorMessage = "User name is required")]
-        public string? UserName { get; init; }
+        public string? UserName { get; set; }
         [Required(ErrorMessage = "Password name is required")]
-        public string? Password { get; init; }
+        public string? Password { get; set; }
 
     }
 }

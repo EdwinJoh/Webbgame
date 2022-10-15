@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedHelpers.DTO;
-
-public record CharacterDto(Guid Id, string Name);
-
+namespace SharedHelpers.DTO
+{
+    public record TokenDto(string AccessToken,string RefreshToken);
+    
+}
