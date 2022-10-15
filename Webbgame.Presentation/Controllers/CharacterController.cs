@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,10 @@ public class CharacterController : ControllerBase
     private readonly IServiceManager _service;
     public CharacterController(IServiceManager service) => _service = service;
     [HttpGet]
-    public IActionResult GetCharacters()
+    [Authorize]
+    public async Task< IActionResult >GetCharacters()
     {
-        var companies = _service.CharacterService.GetAllCharacters(trackChanges: false);
+        var companies = await _service.CharacterService.GetAllCharactersAsync(trackChanges: false);
 
         return Ok(companies);
     }

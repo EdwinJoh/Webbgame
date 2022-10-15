@@ -9,6 +9,6 @@ namespace Contracts
 {
     public interface ICharacterRepository
     {
-        IEnumerable<Characters> GetAllCharacters(bool trackChanges);
+        Task<IEnumerable<Characters>> GetAllCharactersAsync(bool trackChanges);
     }
 }

@@ -10,6 +10,6 @@ namespace Service.Contracts
 {
     public interface ICharacterService
     {
-        IEnumerable<CharacterDto> GetAllCharacters(bool trackChanges);
+       Task< IEnumerable<CharacterDto>> GetAllCharactersAsync(bool trackChanges);
     }
 }

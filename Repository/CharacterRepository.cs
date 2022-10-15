@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace Repository
         : base(repositoryContext)
         {
         }
-        public IEnumerable<Characters> GetAllCharacters(bool trackChanges) =>
-            FindAll(trackChanges)
-            .OrderBy(c => c.Name).ToList();
+        public async Task<IEnumerable<Characters>> GetAllCharactersAsync(bool trackChanges) =>
+           await FindAll(trackChanges)
+            .OrderBy(c => c.Name).ToListAsync();
     }
 
 }

@@ -22,9 +22,9 @@ namespace Service
             _logger = logger;
             _mapper = mapper;
         }
-        public IEnumerable<CharacterDto> GetAllCharacters(bool trackChanges)
+        public async Task< IEnumerable<CharacterDto>> GetAllCharactersAsync(bool trackChanges)
         {
-            var characters = _repository.Character.GetAllCharacters(trackChanges);
+            var characters = await _repository.Character.GetAllCharactersAsync(trackChanges);
 
             var characterDto = _mapper.Map<IEnumerable<CharacterDto>>(characters);
 

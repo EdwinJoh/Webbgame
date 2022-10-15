@@ -9,6 +9,6 @@ namespace Contracts
     public interface IRepositoryManager
     {
         ICharacterRepository Character { get; }
-        void Save();
+        Task SaveAsync();
     }
 }
