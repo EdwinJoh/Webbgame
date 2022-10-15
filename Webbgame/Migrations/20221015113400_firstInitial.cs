@@ -3,10 +3,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Webbgame.Migrations
 {
-    public partial class CreatingIdentity : Migration
+    /// <inheritdoc />
+    public partial class firstInitial : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -48,6 +52,34 @@ namespace Webbgame.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Characters",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Profession = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SkillsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Characters", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Skills",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stealing = table.Column<int>(type: "int", nullable: false),
+                    OrganizedCrime = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skills", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +188,33 @@ namespace Webbgame.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "1e3bf336-e4a1-4539-8928-c31706e96a14", "9f8d7fad-791b-4b41-b33e-ed47629e75f3", "Manager", "MANAGER" },
+                    { "907170d5-c29c-4163-aacb-9932f5a27e98", "a79fcde8-651b-47d5-b7a1-9cb99a0acf62", "Administrator", "ADMINISTRATOR" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Characters",
+                columns: new[] { "Id", "Name", "Profession", "SkillsId" },
+                values: new object[,]
+                {
+                    { new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), "Maffia", "Good at organized crime", new Guid("3d490a70-94ce-4d25-9494-5244280c2c23") },
+                    { new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), "Thief", "Good at stealing stuff", new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Skills",
+                columns: new[] { "Id", "CharacterId", "OrganizedCrime", "Stealing" },
+                values: new object[,]
+                {
+                    { new Guid("3d490a70-94ce-4d15-9494-5244280c2c23"), new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), 1, 1 },
+                    { new Guid("3d490a70-94ce-4d25-9494-5244280c2c23"), new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), 1, 1 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -196,6 +255,7 @@ namespace Webbgame.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -212,6 +272,12 @@ namespace Webbgame.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Characters");
+
+            migrationBuilder.DropTable(
+                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

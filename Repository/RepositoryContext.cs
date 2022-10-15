@@ -15,8 +15,10 @@ public class RepositoryContext : IdentityDbContext<User>
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new CharacterConfiguration());
+        modelBuilder.ApplyConfiguration(new SkillsConfiguration());
         modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
     }
     public DbSet<Characters> Characters { get; set; }
+    public DbSet<Skills> Skills { get; set; }
 }

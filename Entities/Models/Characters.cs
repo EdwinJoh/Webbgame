@@ -11,6 +11,7 @@ namespace Entities.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Profession { get; set; }
-        public ICollection<Skills>? Skills { get; set; }
+        public Guid SkillsId { get; set; }
+        
     }
 }

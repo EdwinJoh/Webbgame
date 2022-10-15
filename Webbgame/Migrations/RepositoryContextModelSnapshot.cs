@@ -17,10 +17,10 @@ namespace Webbgame.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "7.0.0-rc.2.22472.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Entities.Models.Characters", b =>
                 {
@@ -32,6 +32,13 @@ namespace Webbgame.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Profession")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SkillsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.ToTable("Characters");
@@ -40,12 +47,52 @@ namespace Webbgame.Migrations
                         new
                         {
                             Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            Name = "Noob"
+                            Name = "Thief",
+                            Profession = "Good at stealing stuff",
+                            SkillsId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
                         },
                         new
                         {
                             Id = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            Name = "Maffia"
+                            Name = "Maffia",
+                            Profession = "Good at organized crime",
+                            SkillsId = new Guid("3d490a70-94ce-4d25-9494-5244280c2c23")
+                        });
+                });
+
+            modelBuilder.Entity("Entities.Models.Skills", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OrganizedCrime")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stealing")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Skills");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3d490a70-94ce-4d15-9494-5244280c2c23"),
+                            CharacterId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                            OrganizedCrime = 1,
+                            Stealing = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("3d490a70-94ce-4d25-9494-5244280c2c23"),
+                            CharacterId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
+                            OrganizedCrime = 1,
+                            Stealing = 1
                         });
                 });
 
@@ -151,15 +198,15 @@ namespace Webbgame.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1ecfdf19-ab09-48f6-9cd5-521496b8ee0e",
-                            ConcurrencyStamp = "1ee4d8df-ef2a-4022-8988-9da5265a683e",
+                            Id = "1e3bf336-e4a1-4539-8928-c31706e96a14",
+                            ConcurrencyStamp = "9f8d7fad-791b-4b41-b33e-ed47629e75f3",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "44f99890-4a49-4f47-92ee-55f7461957cb",
-                            ConcurrencyStamp = "e5cd91b1-1136-415f-ad28-25d81a259313",
+                            Id = "907170d5-c29c-4163-aacb-9932f5a27e98",
+                            ConcurrencyStamp = "a79fcde8-651b-47d5-b7a1-9cb99a0acf62",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -171,7 +218,7 @@ namespace Webbgame.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -196,7 +243,7 @@ namespace Webbgame.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
