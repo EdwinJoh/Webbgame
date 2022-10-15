@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Characters
+    public class Skills
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Profession { get; set; }
-        public ICollection<Skills>? Skills { get; set; }
+        public int Stealing { get; set; }
+        public int OrganizedCrime { get; set; }
+        
     }
 }

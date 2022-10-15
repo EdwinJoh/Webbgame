@@ -15,12 +15,13 @@ public class CharacterController : ControllerBase
 {
     private readonly IServiceManager _service;
     public CharacterController(IServiceManager service) => _service = service;
+
     [HttpGet]
-    [Authorize]
-    public async Task< IActionResult >GetCharacters()
+    [Authorize(Roles ="Manager")]
+    public async Task<IActionResult> GetCharacters()
     {
         var companies = await _service.CharacterService.GetAllCharactersAsync(trackChanges: false);
-
         return Ok(companies);
     }
+
 }
