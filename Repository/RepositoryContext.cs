@@ -1,24 +1,21 @@
 ﻿using Entities.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Repository.Configuration;
 
 namespace Repository;
 
-public class RepositoryContext : IdentityDbContext<User>
+public class RepositoryContext : DbContext
 {
     public RepositoryContext(DbContextOptions options) : base(options)
     {
 
     }
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfiguration(new CharacterConfiguration());
-        modelBuilder.ApplyConfiguration(new SkillsConfiguration());
-        modelBuilder.ApplyConfiguration(new RoleConfiguration());
+    //protected override void OnModelCreating(ModelBuilder modelBuilder)
+    //{
+    //    base.OnModelCreating(modelBuilder);
 
-    }
-    public DbSet<Characters> Characters { get; set; }
-    public DbSet<Skills> Skills { get; set; }
+    //    modelBuilder.ApplyConfiguration(new RoleConfiguration());
+
+    //}
+    public DbSet<User> Users { get; set; }
+
 }

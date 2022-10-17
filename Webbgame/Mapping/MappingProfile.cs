@@ -8,8 +8,8 @@ namespace Webbgame.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Characters, CharacterDto>();
-            CreateMap<UserForRegistrationDto, User>();
+            //CreateMap<Characters, CharacterDto>();
+            //CreateMap<UserForRegistrationDto, User>();
         }
     }
 }

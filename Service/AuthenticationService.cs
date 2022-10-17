@@ -1,167 +1,134 @@
-﻿using AutoMapper;
-using Contracts;
-using Entities.Exceptions;
-using Entities.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Repository;
 using Service.Contracts;
-using SharedHelpers.DTO;
+using SheredHelpers;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Service
 {
-    internal sealed class AuthenticationService : IAuthenticationService
+    public class AuthenService : IAuthService
     {
-        private readonly ILoggerManager _logger;
-        private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
+        private readonly RepositoryContext _context;
         private readonly IConfiguration _configuration;
-        private User? _user;
 
-        public AuthenticationService(ILoggerManager logger, IMapper mapper, UserManager<User> userManager, IConfiguration configuration)
+        public AuthenService(RepositoryContext context, IConfiguration configuration)
         {
-            _logger = logger;
-            _mapper = mapper;
-            _userManager = userManager;
+            _context = context;
             _configuration = configuration;
         }
-        public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration)
+        public async Task<ServiceResponse<string>> Login(string email, string password)
         {
-            var user = _mapper.Map<User>(userForRegistration);
-            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
-
-            if (result.Succeeded)
-                await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
-
-            return result;
-        }
-        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
-        {
-            _user = await _userManager.FindByNameAsync(userForAuth.UserName);
-
-            var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
-
-            if (!result)
-                _logger.LogWarn($"{nameof(ValidateUser)}: Authentication failed. Wrong user name or password.");
-            return result;
-        }
-
-        public async Task<string> CreateToken()
-        {
-            var signingCredentials = GetSigningCredentials();
-
-            var claims = await GetClaims();
-
-            var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
-
-            return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            var respons = new ServiceResponse<string>();
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower().Equals(email.ToLower()));
+            if (user == null)
+            {
+                respons.Success = false;
+                respons.Message = " user not found.";
+            }
+            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                respons.Success = false;
+                respons.Message = " username or password is not matching";
+            }
+            else
+            {
+                respons.Data = CreateToken(user);
+            }
+            return respons;
         }
 
-        private SigningCredentials GetSigningCredentials()
+        /// <summary>
+        /// This service register an user to the database.
+        /// it checks if the user email already exist or not before saving the new user.
+        /// And save the password as an hash.
+        /// </summary>
+        public async Task<ServiceResponse<int>> Register(User user, string password)
         {
-            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
-            var secret = new SymmetricSecurityKey(key);
-
-            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
-        }
-
-        private async Task<List<Claim>> GetClaims()
-        {
-            var claims = new List<Claim>
+            if (await UserExist(user.Email))
+            {
+                return new ServiceResponse<int>
                 {
-                new Claim(ClaimTypes.Name, _user.UserName)
+                    Success = false,
+                    Message = "User already exist"
                 };
-            var roles = await _userManager.GetRolesAsync(_user);
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
             }
-            return claims;
-        }
-        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
-        {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var tokenOptions = new JwtSecurityToken
-            (
-            issuer: jwtSettings["validIssuer"],
-            audience: jwtSettings["validAudience"],
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["expires"])),
-            signingCredentials: signingCredentials
-            );
-            return tokenOptions;
-        }
-        private string GenerateRefreshToken()
-        {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
+            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return new ServiceResponse<int> { Data = user.Id, Message = "Registration Successfull" };
+
+        }
+
+        /// <summary>
+        /// Method that check if the user aleady exist in the database searching for the email that the user puts in.
+        /// </summary>
+        public async Task<bool> UserExist(string email)
+        {
+            if (await _context.Users.AnyAsync(user => user.Email.ToLower().Equals(email.ToLower())))
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Method that creates and set password hash and salt.
+        /// </summary>
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac
+                    .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
-        private ClaimsPrincipal GetPriceipalFromExpiredToken(string token)
+
+        /// <summary>
+        /// This method verify the password the user puts in and hash it to match the password hash in the database.
+        /// </summary>
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            var jwtSettings = _configuration.GetSection("jwtSettings");
-            var tokenValidationParameters = new TokenValidationParameters
+            using (var hmac = new HMACSHA512(passwordSalt))
             {
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"))),
-                ValidateLifetime = true,
-                ValidIssuer = jwtSettings["validIssuer"],
-                ValidAudience = jwtSettings["validAudience"]
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out
-           securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null ||
-           !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
-            StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new SecurityTokenException("Invalid token");
+                var computedHas = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computedHas.SequenceEqual(passwordHash);
             }
-            return principal;
         }
 
-        public async Task<TokenDto> CreateToken(bool populateExp)
+        /// <summary>
+        /// Method that create an token to help the user stay login and set the login timer / token timer to expire after one day.
+        /// </summary>
+
+        private string? CreateToken(User user)
         {
-            var signingCredentials = GetSigningCredentials();
-            var claims = await GetClaims();
-            var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
-            var refreshToken = GenerateRefreshToken();
-
-            _user.RefreshToken = refreshToken;
-
-            if (populateExp)
-                _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
-
-            await _userManager.UpdateAsync(_user);
-            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return new TokenDto(accessToken, refreshToken);
-        }
-
-        public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
+            List<Claim> claims = new List<Claim>
         {
-            var principal = GetPriceipalFromExpiredToken(tokenDto.AccessToken);
-            var user = await _userManager.FindByNameAsync(principal.Identity.Name);
-            if (user == null || user.RefreshToken != tokenDto.RefreshToken ||
-            user.RefreshTokenExpiryTime <= DateTime.Now)
-                throw new RefreshTokenBadRequest();
+            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+            new Claim(ClaimTypes.Name,user.Email)
 
-            _user = user;
+        };
 
-            return await CreateToken(populateExp: false);
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8
+                .GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
         }
-
     }
 }

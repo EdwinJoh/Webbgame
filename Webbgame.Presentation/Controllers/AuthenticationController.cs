@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using SharedHelpers.DTO;
+using SheredHelpers;
 using Webbgame.Presentation.ActionFilters;
 
 namespace Webbgame.Presentation.Controllers
@@ -9,36 +11,39 @@ namespace Webbgame.Presentation.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IServiceManager _service;
-        public AuthenticationController(IServiceManager service) => _service = service;
+        private readonly IAuthService _autService;
 
+        public AuthenticationController(IAuthService autService) => _autService = autService;
+
+        /// <summary>
+        /// Register an user to our application.
+        /// </summary>
         [HttpPost("register")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
+        public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegister request)
         {
-            var result = await _service.AuthenticationService.RegisterUser(userForRegistration);
-            if (!result.Succeeded)
+            var respons = await _autService.Register(new User
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.TryAddModelError(error.Code, error.Description);
-                }
-                return BadRequest(ModelState);
-            }
-            return StatusCode(201);
+                Email = request.Email
+            },
+                    request.Password);
+
+            if (!respons.Success)
+                return BadRequest(respons);
+
+            return Ok(respons);
         }
-
+        /// <summary>
+        /// Log in an user to our application.
+        /// </summary>
         [HttpPost("login")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
+        public async Task<ActionResult<ServiceResponse<string>>> Login(UserLogin request)
         {
-            if (!await _service.AuthenticationService.ValidateUser(user))
-                return Unauthorized();
+            var respons = await _autService.Login(request.Email, request.Password);
 
-            var tokenDto = await _service.AuthenticationService.CreateToken(populateExp: true);
+            if (!respons.Success)
+                return BadRequest(respons);
 
-            return Ok(tokenDto);
-
+            return Ok(respons);
         }
     }
 }

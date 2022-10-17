@@ -3,6 +3,9 @@ using Webbgame.Extensions;
 using NLog;
 using Contracts;
 using Webbgame.Presentation.ActionFilters;
+using Microsoft.AspNetCore.Authentication;
+using Service.Contracts;
+using Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +14,7 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
 
 // Add services to the container.
 builder.Services.AddControllers()
-    .AddApplicationPart(typeof(Webbgame.Presentation.AssemblyReference).Assembly); 
+    .AddApplicationPart(typeof(Webbgame.Presentation.AssemblyReference).Assembly);
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
@@ -21,10 +24,10 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAuthentication();
-builder.Services.ConfigureIdentity();
-builder.Services.AddScoped<ValidationFilterAttribute>();
-builder.Services.ConfigureJWT(builder.Configuration);
 
+builder.Services.AddScoped<ValidationFilterAttribute>();
+
+builder.Services.AddScoped<IAuthService, AuthenService>();
 
 
 
