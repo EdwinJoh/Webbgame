@@ -1,4 +1,7 @@
 ﻿@page "/"
+@inject ILocalStorageService localstorage
+@inject AuthenticationStateProvider AutenticationStateProvider
+@inject NavigationManager _nav
 @using System.Security.Claims
 
 <PageTitle>Index</PageTitle>
@@ -12,5 +15,14 @@ Welcome to your new app.
 <AuthorizeView>
     <Authorized>
         loged in as @context.User.FindFirst(ClaimTypes.Name).Value
+        <button type="button" class="btn btn-primary" @onclick="Logout">log out </button>
     </Authorized>
 </AuthorizeView>
+@code {
+    private async Task Logout()
+    {
+        await localstorage.RemoveItemAsync("authToken");
+        await AutenticationStateProvider.GetAuthenticationStateAsync();
+        _nav.NavigateTo("");
+    }
+}
