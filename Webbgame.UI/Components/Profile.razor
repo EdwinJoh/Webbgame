@@ -1,0 +1,18 @@
+﻿@page "/profile"
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
+
+<AuthorizeView>
+    
+</AuthorizeView>
+
+
+@code {
+    private User user = new User();
+    protected async override Task OnInitializedAsync()
+    {
+        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        var name = user.Identity.Name;
+        var username = authstate.id
+    }
+}

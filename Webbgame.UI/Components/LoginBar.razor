@@ -1,0 +1,41 @@
+﻿@inject ILocalStorageService localStorage
+@inject NavigationManager _nav
+@inject AuthenticationStateProvider AutenticationStateProvider
+
+
+
+<AuthorizeView>
+    <Authorized>
+        loged in as @context.User.FindFirst(ClaimTypes.Name).Value
+        <button type="button" class="btn btn-primary" @onclick="Logout">log out </button>
+    </Authorized>
+    <NotAuthorized>
+
+        <div class="col-1 ">
+            <button class="btn btn-primary" @onclick="NavigateToLogin">Login</button>
+
+        </div>
+        <button @onclick="NavigateToRegister" class=" btn btn-success">Register</button>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+@code {
+
+    private void NavigateToLogin()
+    {
+        _nav.NavigateTo("/login");
+    }
+    private void NavigateToRegister()
+    {
+        _nav.NavigateTo("/register");
+    }
+    private async Task Logout()
+    {
+        await localStorage.RemoveItemAsync("authToken");
+        await AutenticationStateProvider.GetAuthenticationStateAsync();
+        _nav.NavigateTo("");
+    }
+
+}
