@@ -17,5 +17,7 @@ public class RepositoryContext : DbContext
 
     //}
     public DbSet<User> Users { get; set; }
+    public DbSet<Skills> Skills { get; set; }
+    public DbSet<Characters> Characters { get; set; }
 
 }

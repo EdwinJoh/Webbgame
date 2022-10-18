@@ -9,6 +9,7 @@ namespace SharedHelpers.DTO
 {
     public class UserLogin
     {
+        public int Id { get; set; }
         [Required]
         public string Email { get; set; } = string.Empty;
         [Required]

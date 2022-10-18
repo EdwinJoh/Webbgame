@@ -1,17 +1,14 @@
-﻿@page "/profile"
-@inject AuthenticationStateProvider GetAuthenticationStateAsync
+﻿@inject AuthenticationStateProvider _authenticationStateProvider
+@page "/profile"
 
-<AuthorizeView>
-    
-</AuthorizeView>
-
-
+<p>@test</p>
 @code {
-    private User user = new User();
+    private string test;
     protected async override Task OnInitializedAsync()
     {
-        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
-        var user = authstate.User;
-        var name = user.Identity.Name;
-         }
+        var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
+        var UserId = user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value;
+        test = UserId;
+    }
+
 }
