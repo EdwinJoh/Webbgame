@@ -11,6 +11,6 @@ namespace Entities.Models
         public int Id { get; set; }
         public string CharacterName { get; set; }
         public int Level { get; set; }
-        public List<Skills> Skills { get; set; }
+        public Skills Skills { get; set; }
     }
 }
