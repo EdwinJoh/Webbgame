@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace SharedHelpers.DTO
 {
-    public record CharacterDto(string CharacterName,int Level,List<Skills> skills);
+    public record CharacterDto(Guid Id,string CharacterName,int Level,Skills? Skills);
     
 }

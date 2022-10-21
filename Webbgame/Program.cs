@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.HttpOverrides;
-using Webbgame.Extensions;
-using NLog;
 using Contracts;
-using Webbgame.Presentation.ActionFilters;
-using Microsoft.AspNetCore.Authentication;
-using Service.Contracts;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.DependencyInjection;
+using NLog;
 using Service;
+using Service.Contracts;
+using Webbgame.Extensions;
+using Webbgame.Presentation.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +24,9 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAuthentication();
+builder.Services.ConfigureSwaggerGen();
+
+
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
@@ -40,6 +43,13 @@ if (app.Environment.IsProduction())
     app.UseHsts();
 
 // Configure the HTTP request pipeline.
+
+app.UseSwagger();
+app.UseSwaggerUI(s =>
+{
+    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Maze API v1");
+    s.SwaggerEndpoint("/swagger/v2/swagger.json", "Code Maze API v2");
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -12,8 +12,8 @@ using Repository;
 namespace Webbgame.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20221018032143_UpdatedModels")]
-    partial class UpdatedModels
+    [Migration("20221021061759_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,50 @@ namespace Webbgame.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Entities.Models.Characters", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CharacterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("SkillsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SkillsId");
+
+                    b.ToTable("Characters");
+                });
+
+            modelBuilder.Entity("Entities.Models.Skills", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RobberyLV")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Skills");
+                });
 
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
@@ -54,6 +98,15 @@ namespace Webbgame.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Entities.Models.Characters", b =>
+                {
+                    b.HasOne("Entities.Models.Skills", "Skills")
+                        .WithMany()
+                        .HasForeignKey("SkillsId");
+
+                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }

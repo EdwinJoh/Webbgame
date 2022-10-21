@@ -24,11 +24,9 @@ namespace Webbgame.Migrations
 
             modelBuilder.Entity("Entities.Models.Characters", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CharacterName")
                         .IsRequired()
@@ -37,8 +35,12 @@ namespace Webbgame.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<int>("SkillsId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("SkillsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -49,16 +51,14 @@ namespace Webbgame.Migrations
 
             modelBuilder.Entity("Entities.Models.Skills", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Robbery")
+                    b.Property<int>("RobberyLV")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -101,9 +101,7 @@ namespace Webbgame.Migrations
                 {
                     b.HasOne("Entities.Models.Skills", "Skills")
                         .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SkillsId");
 
                     b.Navigation("Skills");
                 });

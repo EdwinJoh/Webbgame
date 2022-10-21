@@ -1,14 +1,11 @@
 ﻿using Contracts;
-using Entities.Models;
 using LoggerService;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Repository;
 using Service;
 using Service.Contracts;
-using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace Webbgame.Extensions;
 
@@ -42,6 +39,22 @@ public static class ServiceExtensions
          services.AddDbContext<RepositoryContext>(opts =>
              opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
 
+    public static void ConfigureSwaggerGen(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(s =>
+        {
+            s.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Code Maze API",
+                Version = "v1"
+            });
+            s.SwaggerDoc("v2", new OpenApiInfo
+            {
+                Title = "Code Maze API",
+                Version = "v2"
+            });
+        });
+    }
 
 
 

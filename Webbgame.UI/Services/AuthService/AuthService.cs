@@ -1,5 +1,5 @@
 ﻿using SharedHelpers;
-using SharedHelpers.DTO;
+using SharedHelpers.DTO.UserDto;
 using SheredHelpers;
 using System.Net.Http.Json;
 

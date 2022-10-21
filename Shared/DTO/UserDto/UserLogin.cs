@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedHelpers.DTO
+namespace SharedHelpers.DTO.UserDto
 {
     public class UserLogin
     {

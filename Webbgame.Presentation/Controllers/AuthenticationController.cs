@@ -1,7 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
-using SharedHelpers.DTO;
+using SharedHelpers.DTO.UserDto;
 using SheredHelpers;
 using Webbgame.Presentation.ActionFilters;
 

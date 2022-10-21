@@ -10,6 +10,7 @@ namespace Webbgame.Mapping
         {
             CreateMap<Characters, CharacterDto>();
             CreateMap<CharacterDto, Characters>();
+            CreateMap<CharacterForCreationDto, Characters>();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Service
         {
        
             _characterService = new Lazy<ICharacterService>(() => new
-            CharacterService(repositoryManager, logger, mapper));
+            CharacterService(repositoryManager, logger, mapper,repositoryContext));
 
             _authenticationService = new Lazy<IAuthService>(() =>
             new AuthenService(repositoryContext, configuration));

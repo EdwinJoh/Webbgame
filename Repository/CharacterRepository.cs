@@ -16,8 +16,8 @@ namespace Repository
 
         }
 
-        public async Task<Characters> GetCharactersAsync(int id, bool trackChanges) =>
-            await FindByCondition(x => x.Id == id, trackChanges).SingleOrDefaultAsync();
+        public async Task<Characters> GetCharactersAsync(string email, bool trackChanges) =>
+            await FindByCondition(x => x.UserEmail == email, trackChanges).SingleOrDefaultAsync();
 
         public void CreateCharacter(Characters characters) => Create(characters);
         public void DeleteCharacter(Characters characters) => Delete(characters);
