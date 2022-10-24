@@ -17,9 +17,9 @@ namespace Webbgame.UI.Services
         public async Task<CharacterDto> GetCharacter(string email)
         {
             var respons = await _client.GetFromJsonAsync<CharacterDto>($"api/character/email?email={email}");
-            //var character = (await respons.Content.ReadFromJsonAsync<CharacterDto>());
-            return respons!;
-        }
+            return respons;
+
+                    }
         public async Task<CharacterDto> CreateCharacter(CharacterForCreationDto character)
         {
             var respons = await _client.PostAsJsonAsync("api/character/", character);

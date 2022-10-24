@@ -6,7 +6,7 @@
 
 <AuthorizeView>
     <Authorized>
-        loged in as @context.User.FindFirst(ClaimTypes.Name).Value
+        logged in as: @context.User.FindFirst(ClaimTypes.Name).Value
         <button type="button" class="btn btn-primary" @onclick="Logout">log out </button>
     </Authorized>
     <NotAuthorized>

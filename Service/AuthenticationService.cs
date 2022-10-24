@@ -61,7 +61,7 @@ namespace Service
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-
+            user.Rank = "unknown";
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return new ServiceResponse<int> { Data = user.Id, Message = "Registration Successfull" };
@@ -130,5 +130,9 @@ namespace Service
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
+
+        private 
+
     }
+
 }

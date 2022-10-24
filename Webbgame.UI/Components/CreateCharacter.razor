@@ -1,41 +1,29 @@
 ﻿@inject AuthenticationStateProvider _authenticationStateProvider
 @inject IRequestService _service
 @inject NavigationManager _nav
-@page "/CreateCharacter"
+@page "/createcharacter"
 
 
-@if (!show)
-{
-    <p>wait</p>
-}
-@if (show)
-{
-    @if (ExistCharactrer == null)
-    {
 
-        <EditForm Model="@newCharacter" OnValidSubmit="@HandleSubmit">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <div class="col-md-1 mb-3">
-                <label for="UserEmail">Email:</label>
-                <input type="text" id="userEmail" name="userEmain" value="@UserEmail" disabled />
-            </div>
-            <div class="col-md-3 mb-3">
-                <label for="UserEmail">Character Name:</label>
-                <InputText type="text" id="userEmail" name="userEmain" @bind-Value="@newCharacter.CharacterName" />
-            </div>
-            <button type="submit">Create</button>
 
-        </EditForm>
-    }
-    else
-    {
-        <p>You already have an character named: @ExistCharactrer.CharacterName</p>
-        <p>Redirecting to home page... </p>
 
-    }
+    <EditForm Model="@newCharacter" OnValidSubmit="@HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="col-md-1 mb-3">
+            <label for="UserEmail">Email:</label>
+            <input type="text" id="userEmail" name="userEmain" value="@UserEmail" disabled />
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="UserEmail">Character Name:</label>
+            <InputText type="text" id="userEmail" name="userEmain" @bind-Value="@newCharacter.CharacterName" />
+        </div>
+        <button type="submit">Create</button>
 
-}
+    </EditForm>
+
+
+
 
 
 
@@ -45,17 +33,13 @@
     public CharacterForCreationDto newCharacter = new();
     private CharacterDto? ExistCharactrer;
 
-    private bool show = false;
 
     protected async override Task OnInitializedAsync()
     {
         var user = (await _authenticationStateProvider.GetAuthenticationStateAsync()).User;
         UserEmail = user.Identity.Name;
 
-        ExistCharactrer = await _service.GetCharacter(UserEmail);
-
-        show = true;
-
+        
     }
 
     private async void HandleSubmit()
