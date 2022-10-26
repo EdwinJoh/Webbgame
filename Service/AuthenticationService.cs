@@ -113,7 +113,8 @@ namespace Service
             List<Claim> claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-            new Claim(ClaimTypes.Name,user.Email)
+            new Claim(ClaimTypes.Name,user.Email),
+            new Claim(ClaimTypes.Name,user.Rank),
 
         };
 
@@ -130,8 +131,8 @@ namespace Service
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
-
-        private 
+        
+       
 
     }
 
