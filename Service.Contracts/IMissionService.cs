@@ -11,5 +11,6 @@ namespace Service.Contracts
     {
         Task<MissionDto> GetMissionAsync(Guid guid, bool trackChanges);
         Task<IEnumerable<MissionDto>> GetMissionsAsync( bool trackChanges);
+        Task<MissionDto> CreateMissionAsync(MissionForCreateDto mission, bool trackChanges);
     }
 }

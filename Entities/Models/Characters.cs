@@ -13,5 +13,6 @@ namespace Entities.Models
         public string CharacterName { get; set; }
         public int Level { get; set; }
         public Skills? Skills { get; set; }
+        public int Money { get; set; }
     }
 }

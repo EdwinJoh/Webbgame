@@ -16,5 +16,6 @@ namespace SharedHelpers.DTO
         public string CharacterName { get; set; }
         public int Level { get; set; } = 1;
         public Skills? Skills { get; set; }
+        public int Money { get; set; } = 1000;
     }
 }

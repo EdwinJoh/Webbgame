@@ -3,6 +3,7 @@ using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using Microsoft.Identity.Client;
 using Service.Contracts;
 using SharedHelpers.DTO.MissionDtos;
 using System;
@@ -42,6 +43,19 @@ namespace Service
 
             return missionsDto;
         }
+
+        public async Task<MissionDto> CreateMissionAsync(MissionForCreateDto mission, bool trackChanges)
+        {
+            mission.Id = Guid.NewGuid();
+            var missionEntity = _mapper.Map<Mission>(mission);
+
+            _repository.Mission.CreateMission(missionEntity);
+            await _repository.SaveAsync();
+
+            var missionToReturn = _mapper.Map<MissionDto>(missionEntity);
+            return missionToReturn;
+        }
+
         private async Task CheckIfMissionExist(Guid id)
         {
             var mission = await _repository.Mission.GetMission(id, trackChanges: false);

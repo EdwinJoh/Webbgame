@@ -22,6 +22,9 @@ namespace Repository
 
         public async Task<IEnumerable<Mission>> GetMissions(bool trackChanges) =>
             await FindAll(trackChanges).ToListAsync();
-       
+
+        public void CreateMission(Mission mission) => Create(mission);
+        public void DeleteMission(Mission mission) => Delete(mission);
+
     }
 }

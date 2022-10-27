@@ -1,4 +1,5 @@
 ﻿using SharedHelpers.DTO;
+using SharedHelpers.DTO.MissionDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,19 @@ namespace Webbgame.UI.Services
             var respons = await _client.GetFromJsonAsync<CharacterDto>($"api/character/email?email={email}");
             return respons;
 
-                    }
+        }
         public async Task<CharacterDto> CreateCharacter(CharacterForCreationDto character)
         {
             var respons = await _client.PostAsJsonAsync("api/character/", character);
             var newCharacter = (await respons.Content.ReadFromJsonAsync<CharacterDto>());
             return newCharacter!;
+        }
+
+        public async Task<MissionDto> CreateMission(MissionForCreateDto mission)
+        {
+            var respons = await _client.PostAsJsonAsync("api/mission", mission);
+            var newMission = (await respons.Content.ReadFromJsonAsync<MissionDto>());
+            return newMission!;
         }
 
     }

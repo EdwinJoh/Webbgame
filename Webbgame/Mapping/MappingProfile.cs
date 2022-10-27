@@ -13,7 +13,8 @@ namespace Webbgame.Mapping
             CreateMap<CharacterDto, Characters>();
             CreateMap<CharacterForCreationDto, Characters>();
             CreateMap<Mission, MissionDto>();
-            CreateMap< MissionDto,Mission>();
+            CreateMap<MissionDto, Mission>();
+            CreateMap<MissionForCreateDto, Mission>();
         }
     }
 }

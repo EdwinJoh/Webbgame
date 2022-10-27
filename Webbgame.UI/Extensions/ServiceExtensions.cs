@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using MudBlazor.Services;
 using Webbgame.UI.Services;
 using Webbgame.UI.Services.AuthService;
 
@@ -20,6 +21,7 @@ namespace Webbgame.UI.Extensions
             services.AddOptions();
             services.AddAuthorizationCore();
             services.AddScoped<AuthenticationStateProvider, CustomerAuthStateProvider>();
+            services.AddMudServices();
         }
     }
 }

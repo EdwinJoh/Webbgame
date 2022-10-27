@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using SharedHelpers.DTO.MissionDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace Webbgame.Presentation.Controllers
             var missions = await _service.MissionService.GetMissionsAsync(trackChanges: false);
             return Ok(missions);
         }
+
         [HttpGet("id:guid")]
         public async Task<IActionResult>GetMission(Guid id)
         {
@@ -28,5 +30,11 @@ namespace Webbgame.Presentation.Controllers
             return Ok(mission);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateMission([FromBody] MissionForCreateDto mission)
+        {
+            var missionToCreate = await _service.MissionService.CreateMissionAsync(mission,trackChanges:false);
+            return NoContent();
+        }
     }
 }
