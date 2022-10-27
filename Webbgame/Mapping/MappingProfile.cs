@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Models;
 using SharedHelpers.DTO;
+using SharedHelpers.DTO.MissionDtos;
 
 namespace Webbgame.Mapping
 {
@@ -11,6 +12,8 @@ namespace Webbgame.Mapping
             CreateMap<Characters, CharacterDto>();
             CreateMap<CharacterDto, Characters>();
             CreateMap<CharacterForCreationDto, Characters>();
+            CreateMap<Mission, MissionDto>();
+            CreateMap< MissionDto,Mission>();
         }
     }
 }

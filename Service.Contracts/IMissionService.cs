@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharedHelpers.DTO.MissionDtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace Service.Contracts
 {
     public interface IMissionService
     {
-
+        Task<MissionDto> GetMissionAsync(Guid guid, bool trackChanges);
+        Task<IEnumerable<MissionDto>> GetMissionsAsync( bool trackChanges);
     }
 }

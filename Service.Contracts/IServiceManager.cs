@@ -10,6 +10,7 @@ namespace Service.Contracts
     {
         IAuthService AuthenticationService { get; }
         ICharacterService CharacterService { get; }
+        IMissionService MissionService { get; }
 
     }
 }

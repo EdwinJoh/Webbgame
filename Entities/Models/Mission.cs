@@ -10,6 +10,6 @@ namespace Entities.Models
     {
         public Guid Id { get; set; }
         public string  Name { get; set; }
-        public string  Money { get; set; }
+        public int  Money { get; set; }
     }
 }
