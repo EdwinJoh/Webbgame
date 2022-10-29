@@ -62,5 +62,24 @@ namespace Service
             if (mission == null)
                 throw new Exception($"Did not found mission with ID: {id} ");
         }
+
+        public async Task<MissionDto> GetMissionByName(string name, bool trackChanges)
+        {
+            CheckIfMissionExist(name);
+            var missionEntity = await _repository.Mission.GetMissionByName(name, trackChanges);
+
+            var missionDto = _mapper.Map<MissionDto>(missionEntity);
+
+            return missionDto;
+
+        }
+
+        private bool CheckIfMissionExist(string name)
+        {
+            var mission = _repository.Mission.GetMissionByName(name, trackChanges: false);
+            if (mission == null)
+                throw new Exception();
+            return true;
+        }
     }
 }

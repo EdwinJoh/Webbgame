@@ -4,14 +4,21 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
 <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
 <MudThemeProvider Theme="_theme" />
+<AuthorizeView>
+    <Authorized>
+        <div class="col-md md-5">
+            <MudTextField @bind-Value="newMission.Name" Label="Name" Variant="Variant.Text"></MudTextField>
+            <MudNumericField @bind-Value="newMission.Money" Label="Money" Variant="Variant.Text" Min="0" Max="1000" />
 
+        </div>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Large" OnClick="@(() =>OnSubmit())">Save</MudButton>
 
-<div class="col-md md-5">
-    <MudTextField @bind-Value="newMission.Name" Label="Name" Variant="Variant.Text"></MudTextField>
-    <MudNumericField @bind-Value="newMission.Money" Label="Money" Variant="Variant.Text" Min="0" Max="1000" />
+    </Authorized>
+    <NotAuthorized>
+        <p>You need to be logged in to access this page.</p>
+    </NotAuthorized>
+</AuthorizeView>
 
-</div>
-<MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Large" OnClick="@(() =>OnSubmit())">Save</MudButton>
 
 
 @code {
@@ -21,7 +28,7 @@
 
     private async void OnSubmit()
     {
-        
+
         var sent = await _service.CreateMission(newMission);
     }
 }

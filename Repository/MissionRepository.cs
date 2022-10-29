@@ -26,5 +26,7 @@ namespace Repository
         public void CreateMission(Mission mission) => Create(mission);
         public void DeleteMission(Mission mission) => Delete(mission);
 
+        public async Task<Mission> GetMissionByName(string name,bool trackChanges) =>
+            await FindByCondition(x => x.Name.Equals(name),trackChanges).FirstOrDefaultAsync();
     }
 }

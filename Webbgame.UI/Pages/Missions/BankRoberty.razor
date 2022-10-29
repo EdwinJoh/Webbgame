@@ -1,10 +1,15 @@
 ﻿@page "/bankjob"
-
+@inject IRequestService service
 
 
 
 
 
 @code{
-   
+    private MissionDto mission;
+    protected async override Task OnInitializedAsync()
+    {
+        mission = await service.GetRobberyMission("robbery");
+
+    }
 }

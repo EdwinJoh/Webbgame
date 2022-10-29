@@ -13,5 +13,6 @@ namespace Contracts
         Task<IEnumerable<Mission>> GetMissions(bool trackChanges);
         void CreateMission(Mission mission);
         void DeleteMission(Mission mission);
+        Task<Mission> GetMissionByName(string name, bool trackChanges);
     }
 }

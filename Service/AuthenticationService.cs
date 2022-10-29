@@ -61,7 +61,6 @@ namespace Service
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            user.Rank = "unknown";
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return new ServiceResponse<int> { Data = user.Id, Message = "Registration Successfull" };
@@ -114,7 +113,6 @@ namespace Service
         {
             new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
             new Claim(ClaimTypes.Name,user.Email),
-            new Claim(ClaimTypes.Name,user.Rank),
 
         };
 
