@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Webbgame.Presentation;
 
-namespace Webbgame.Presentation
+public static class AssemblyReference
 {
-    public static class AssemblyReference
-    {
 
-    }
 }

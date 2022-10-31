@@ -1,11 +1,10 @@
 ﻿using Entities.Models;
 
-namespace Contracts
+namespace Contracts;
+
+public interface ICharacterRepository
 {
-    public interface ICharacterRepository
-    {
-        void CreateCharacter(Characters characters);
-        void DeleteCharacter(Characters characters);
-        Task<Characters> GetCharactersAsync(string email, bool trackChanges);
-    }
+    void CreateCharacter(Characters characters);
+    void DeleteCharacter(Characters characters);
+    Task<Characters> GetCharactersAsync(string email, bool trackChanges);
 }

@@ -1,6 +1,5 @@
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.DependencyInjection;
 using NLog;
 using Service;
 using Service.Contracts;

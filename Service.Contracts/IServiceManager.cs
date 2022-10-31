@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Service.Contracts;
 
-namespace Service.Contracts
+public interface IServiceManager
 {
-    public interface IServiceManager
-    {
-        IAuthService AuthenticationService { get; }
-        ICharacterService CharacterService { get; }
-        IMissionService MissionService { get; }
+    IAuthService AuthenticationService { get; }
+    ICharacterService CharacterService { get; }
+    IMissionService MissionService { get; }
 
-    }
 }

@@ -1,0 +1,35 @@
+﻿@page "/bankjob"
+@inject IRequestService service
+
+
+@if (mission == null)
+{
+    <p> Loading mission Robbery</p>
+}
+else
+{
+    <div class="col col-md-2">
+        <MudPaper Class="pa-20 ma-3" Elevation="6">
+            <div>
+                <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Size="Size.Large" />
+            </div>
+            <p>Robbery Mission</p>
+            <MudRating MaxValue="4" SelectedValue="1" Disabled />
+        </MudPaper>
+
+    </div>
+
+
+}
+
+
+@code {
+    private MissionDto mission;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var missions = await service.GetMissions();
+        mission = missions.Where(x => x.Name.Equals("Robbery")).FirstOrDefault();
+
+    }
+}

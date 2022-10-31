@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Contracts;
 
-namespace Contracts
+public interface IRepositoryManager
 {
-    public interface IRepositoryManager
-    {
-        ICharacterRepository Character { get; }
-        IMissionRepository Mission { get; }
-        Task SaveAsync();
-    }
+    ICharacterRepository Character { get; }
+    IMissionRepository Mission { get; }
+    Task SaveAsync();
 }

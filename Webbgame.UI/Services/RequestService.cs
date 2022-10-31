@@ -35,9 +35,9 @@ namespace Webbgame.UI.Services
             return newMission!;
         }
 
-        public async Task<MissionDto> GetRobberyMission(string mission)
+       public async Task<IEnumerable<MissionDto>> GetMissions()
         {
-            var respons = await _client.GetFromJsonAsync<MissionDto>($"api/mission/getmission/{mission}" );
+            var respons = await _client.GetFromJsonAsync<IEnumerable<MissionDto>>("api/mission/");
             return respons!;
         }
 

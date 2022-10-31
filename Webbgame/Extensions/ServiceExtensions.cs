@@ -5,7 +5,6 @@ using Microsoft.OpenApi.Models;
 using Repository;
 using Service;
 using Service.Contracts;
-using Microsoft.OpenApi.Models;
 
 namespace Webbgame.Extensions;
 

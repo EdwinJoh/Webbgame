@@ -1,18 +1,12 @@
 ﻿using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Contracts
+namespace Contracts;
+
+public interface IMissionRepository
 {
-    public interface IMissionRepository
-    {
-        Task<Mission> GetMission(Guid id,bool trackChanges);
-        Task<IEnumerable<Mission>> GetMissions(bool trackChanges);
-        void CreateMission(Mission mission);
-        void DeleteMission(Mission mission);
-        Task<Mission> GetMissionByName(string name, bool trackChanges);
-    }
+    Task<Mission> GetMission(Guid id, bool trackChanges);
+    Task<IEnumerable<Mission>> GetMissions(bool trackChanges);
+    void CreateMission(Mission mission);
+    void DeleteMission(Mission mission);
+    Task<Mission> GetMissionByName(string name, bool trackChanges);
 }
