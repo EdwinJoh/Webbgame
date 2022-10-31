@@ -1,4 +1,4 @@
-﻿using SharedHelpers.DTO;
+﻿using SharedHelpers.DTO.CharacterDtos;
 using SharedHelpers.DTO.MissionDtos;
 
 namespace Webbgame.UI.Services
@@ -9,5 +9,7 @@ namespace Webbgame.UI.Services
         Task<CharacterDto> CreateCharacter(CharacterForCreationDto character);
         Task<MissionDto> CreateMission(MissionForCreateDto mission);
         Task<IEnumerable<MissionDto>> GetMissions();
+        Task UpdateCharacter( CharacterDto character);
     }
+
 }

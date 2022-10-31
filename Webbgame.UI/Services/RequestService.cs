@@ -1,4 +1,4 @@
-﻿using SharedHelpers.DTO;
+﻿using SharedHelpers.DTO.CharacterDtos;
 using SharedHelpers.DTO.MissionDtos;
 using System;
 using System.Collections.Generic;
@@ -35,11 +35,15 @@ namespace Webbgame.UI.Services
             return newMission!;
         }
 
-       public async Task<IEnumerable<MissionDto>> GetMissions()
+        public async Task<IEnumerable<MissionDto>> GetMissions()
         {
             var respons = await _client.GetFromJsonAsync<IEnumerable<MissionDto>>("api/mission/");
             return respons!;
         }
-
+        public async Task UpdateCharacter(CharacterDto Character)
+        {
+            string id = Character.Id.ToString();
+            await _client.PutAsJsonAsync($"api/character/{id}", Character);
+        }
     }
 }

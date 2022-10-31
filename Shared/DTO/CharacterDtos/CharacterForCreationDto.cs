@@ -1,7 +1,7 @@
 ﻿using Entities.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace SharedHelpers.DTO;
+namespace SharedHelpers.DTO.CharacterDtos;
 
 public record CharacterForCreationDto
 {

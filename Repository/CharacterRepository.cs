@@ -21,5 +21,8 @@ namespace Repository
 
         public void CreateCharacter(Characters characters) => Create(characters);
         public void DeleteCharacter(Characters characters) => Delete(characters);
+        public void UpdateCharacter(Characters characters) => Update(characters);
+
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿@page "/bankjob"
 @inject IRequestService service
-
+@inject AuthenticationStateProvider AutenticationStateProvider
 
 @if (mission == null)
 {
@@ -16,6 +16,10 @@ else
             <p>Robbery Mission</p>
             <MudRating MaxValue="4" SelectedValue="1" Disabled />
         </MudPaper>
+        <div class="col col-md-2">
+
+            <MudButton Variant="Variant.Filled" @onclick="DoHeist" StartIcon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Warning">Do Heist</MudButton>
+        </div>
 
     </div>
 
@@ -25,11 +29,24 @@ else
 
 @code {
     private MissionDto mission;
+    private CharacterDto Character;
 
     protected async override Task OnInitializedAsync()
     {
         var missions = await service.GetMissions();
         mission = missions.Where(x => x.Name.Equals("Robbery")).FirstOrDefault();
+
+        var authstate = await AutenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        var name = user.Identity.Name;
+        if (name != null)
+            Character = await service.GetCharacter(name);
+
+    }
+    private async void DoHeist()
+    {
+        Character.Money += mission.money;
+        await service.UpdateCharacter(Character);
 
     }
 }

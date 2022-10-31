@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Service.Contracts;
+using SharedHelpers.DTO.CharacterDtos;
 using SharedHelpers.DTO.MissionDtos;
 
 namespace Webbgame.Presentation.Controllers;
@@ -32,5 +33,7 @@ public class MissionController : ControllerBase
         var missionToCreate = await _service.MissionService.CreateMissionAsync(mission, trackChanges: false);
         return NoContent();
     }
+
+    
    
 }

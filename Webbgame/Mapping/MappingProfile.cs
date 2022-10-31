@@ -1,19 +1,22 @@
 ﻿using AutoMapper;
 using Entities.Models;
-using SharedHelpers.DTO;
+using SharedHelpers.DTO.CharacterDtos;
 using SharedHelpers.DTO.MissionDtos;
 
-namespace Webbgame.Mapping;
-
-public class MappingProfile : Profile
+namespace Webbgame.Mapping
 {
-    public MappingProfile()
+    public class MappingProfile : Profile
     {
-        CreateMap<Characters, CharacterDto>();
-        CreateMap<CharacterDto, Characters>();
-        CreateMap<CharacterForCreationDto, Characters>();
-        CreateMap<Mission, MissionDto>();
-        CreateMap<MissionDto, Mission>();
-        CreateMap<MissionForCreateDto, Mission>();
+        public MappingProfile()
+        {
+            CreateMap<Characters, CharacterDto>();
+            CreateMap<CharacterDto, Characters>();
+            CreateMap<CharacterForCreationDto, Characters>();
+            CreateMap<CharacterFotUpdateDto, CharacterDto>().ReverseMap();
+            CreateMap<CharacterFotUpdateDto, Characters>();
+            CreateMap<Mission, MissionDto>();
+            CreateMap<MissionDto, Mission>();
+            CreateMap<MissionForCreateDto, Mission>();
+        }
     }
 }
