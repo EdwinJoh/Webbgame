@@ -8,20 +8,30 @@
 }
 else
 {
-    <div class="col col-md-2">
-        <MudPaper Class="pa-20 ma-3" Elevation="6">
-            <div>
-                <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Size="Size.Large" />
+    <AuthorizeView>
+        <Authorized>
+
+            <div class="col col-md-2">
+                <MudPaper Class="pa-20 ma-3" Elevation="6">
+                    <div>
+                        <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Size="Size.Large" />
+                    </div>
+
+                    <p>Robbery Mission</p>
+
+                    <MudRating MaxValue="4" SelectedValue="1" Disabled />
+                </MudPaper>
+                <div class="col col-md-2">
+
+                    <MudButton Variant="Variant.Filled" @onclick="DoHeist" StartIcon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Warning">Do Heist</MudButton>
+                </div>
+
             </div>
-            <p>Robbery Mission</p>
-            <MudRating MaxValue="4" SelectedValue="1" Disabled />
-        </MudPaper>
-        <div class="col col-md-2">
-
-            <MudButton Variant="Variant.Filled" @onclick="DoHeist" StartIcon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Warning">Do Heist</MudButton>
-        </div>
-
-    </div>
+        </Authorized>
+        <NotAuthorized>
+            <p>You need to login to access this page</p>
+        </NotAuthorized>
+    </AuthorizeView>
 
 
 }
