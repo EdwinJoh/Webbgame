@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using SharedHelpers.DTO.MissionDtos;
@@ -18,6 +19,7 @@ public class MissionService : IMissionService
         _logger = logger;
         _mapper = mapper;
     }
+
     public async Task<MissionDto> GetMissionAsync(Guid guid, bool trackChanges)
     {
         await CheckIfMissionExist(guid);
@@ -53,12 +55,12 @@ public class MissionService : IMissionService
     {
         var mission = await _repository.Mission.GetMission(id, trackChanges: false);
         if (mission == null)
-            throw new Exception($"Did not found mission with ID: {id} ");
+            throw new MissionNotFound(mission.Id);
     }
 
     public async Task<MissionDto> GetMissionByName(string name, bool trackChanges)
     {
-        await CheckIfMissionExist(name);
+        await CheckIfMissionExistByName(name);
         var missionEntity = await _repository.Mission.GetMissionByName(name, trackChanges);
 
         var missionDto = _mapper.Map<MissionDto>(missionEntity);
@@ -67,12 +69,12 @@ public class MissionService : IMissionService
 
     }
 
-    private async Task<bool> CheckIfMissionExist(string name)
+    private async Task<bool> CheckIfMissionExistByName(string name)
     {
         var mission = await _repository.Mission.GetMissionByName(name, trackChanges: false);
 
         if (mission == null)
-            throw new Exception("Did not found mission with name: " + name);
+            throw new MissionNotFound(mission.Id);
         return true;
     }
 }

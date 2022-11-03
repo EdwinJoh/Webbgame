@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Webbgame.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20221103045054_addedWeapons")]
+    partial class addedWeapons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,14 +48,9 @@ namespace Webbgame.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("WeaponsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SkillsId");
-
-                    b.HasIndex("WeaponsId");
 
                     b.ToTable("Characters");
                 });
@@ -129,11 +127,16 @@ namespace Webbgame.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CharactersId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CharactersId");
 
                     b.ToTable("Weapons");
                 });
@@ -144,12 +147,18 @@ namespace Webbgame.Migrations
                         .WithMany()
                         .HasForeignKey("SkillsId");
 
-                    b.HasOne("Entities.Models.Weapon", "Weapons")
-                        .WithMany()
-                        .HasForeignKey("WeaponsId");
-
                     b.Navigation("Skills");
+                });
 
+            modelBuilder.Entity("Entities.Models.Weapon", b =>
+                {
+                    b.HasOne("Entities.Models.Characters", null)
+                        .WithMany("Weapons")
+                        .HasForeignKey("CharactersId");
+                });
+
+            modelBuilder.Entity("Entities.Models.Characters", b =>
+                {
                     b.Navigation("Weapons");
                 });
 #pragma warning restore 612, 618

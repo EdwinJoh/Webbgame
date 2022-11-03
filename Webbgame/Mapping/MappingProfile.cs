@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Models;
 using SharedHelpers.DTO.CharacterDtos;
+using SharedHelpers.DTO.CharacterDtos.Weapons;
 using SharedHelpers.DTO.MissionDtos;
 
 namespace Webbgame.Mapping
@@ -14,9 +15,15 @@ namespace Webbgame.Mapping
             CreateMap<CharacterForCreationDto, Characters>();
             CreateMap<CharacterFotUpdateDto, CharacterDto>().ReverseMap();
             CreateMap<CharacterFotUpdateDto, Characters>();
+
             CreateMap<Mission, MissionDto>();
             CreateMap<MissionDto, Mission>();
             CreateMap<MissionForCreateDto, Mission>();
+
+            CreateMap<WeaponDto, Weapon>();
+            CreateMap<Weapon, WeaponDto>();
+            CreateMap<WeaponForCreation,WeaponDto>();
+
         }
     }
 }

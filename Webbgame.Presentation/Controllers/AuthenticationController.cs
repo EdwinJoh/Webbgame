@@ -10,9 +10,9 @@ namespace Webbgame.Presentation.Controllers;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthService _autService;
+    private readonly IWeaponSevice _autService;
 
-    public AuthenticationController(IAuthService autService) => _autService = autService;
+    public AuthenticationController(IWeaponSevice autService) => _autService = autService;
 
     /// <summary>
     /// Register an user to our application.

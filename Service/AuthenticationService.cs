@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 
 namespace Service;
 
-public class AuthenService : IAuthService
+public class AuthenService : IAuthenticationService
 {
     private readonly RepositoryContext _context;
     private readonly IConfiguration _configuration;

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Webbgame.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20221103045709_moddedweaponForuser")]
+    partial class moddedweaponForuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace Webbgame.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("WeaponsId")
+                    b.Property<Guid>("WeaponsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -146,7 +149,9 @@ namespace Webbgame.Migrations
 
                     b.HasOne("Entities.Models.Weapon", "Weapons")
                         .WithMany()
-                        .HasForeignKey("WeaponsId");
+                        .HasForeignKey("WeaponsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Skills");
 

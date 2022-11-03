@@ -29,7 +29,7 @@ builder.Services.ConfigureSwaggerGen();
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
-builder.Services.AddScoped<IAuthService, AuthenService>();
+builder.Services.AddScoped<IWeaponSevice, AuthenService>();
 
 
 

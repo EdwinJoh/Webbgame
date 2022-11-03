@@ -8,4 +8,5 @@ public class Characters
     public int Level { get; set; }
     public Skills? Skills { get; set; }
     public int Money { get; set; }
+    public Weapon? Weapons { get; set; }
 }

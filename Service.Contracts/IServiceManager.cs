@@ -2,8 +2,9 @@
 
 public interface IServiceManager
 {
-    IAuthService AuthenticationService { get; }
+    IAuthenticationService AuthenticationService { get; }
     ICharacterService CharacterService { get; }
     IMissionService MissionService { get; }
+    IWeaponService WeaponService { get; }
 
 }

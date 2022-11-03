@@ -20,5 +20,7 @@ public class RepositoryContext : DbContext
     public DbSet<Skills> Skills { get; set; }
     public DbSet<Characters> Characters { get; set; }
     public DbSet<Mission> Missions { get; set; }
+    public DbSet<Weapon> Weapons { get; set; }
+
 
 }

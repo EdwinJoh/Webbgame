@@ -3,7 +3,7 @@ using SheredHelpers;
 
 namespace Service.Contracts;
 
-public interface IAuthService
+public interface IAuthenticationService
 {
     Task<ServiceResponse<int>> Register(User user, string password);
     Task<bool> UserExist(string email);
