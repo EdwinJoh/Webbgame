@@ -13,8 +13,14 @@ public class WeaponController : ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> GetWapons()
 	{
-		var weapons = _service.WeaponService.GetAllWeaponsAsync(trackChanges: false);
+		var weapons = await _service.WeaponService.GetAllWeaponsAsync(trackChanges: false);
 		return Ok(weapons);
+	}
+	[HttpGet("id:guid")]
+	public async Task<IActionResult> GetWeapon(string name)
+	{
+		var weapon = await _service.WeaponService.GetWeaponAsync(name,trackChanges:false);
+		return Ok(weapon);
 	}
 	
 }

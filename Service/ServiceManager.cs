@@ -35,6 +35,7 @@ public class ServiceManager : IServiceManager
     public ICharacterService CharacterService => _characterService.Value;
     public IMissionService MissionService => _missionService.Value;
     public IAuthenticationService AuthenticationService => _authenticationService.Value;
+    public IWeaponService WeaponService => _weaponService.Value;
 
 
 }

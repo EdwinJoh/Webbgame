@@ -31,7 +31,7 @@ public class WeaponSevice : IWeaponService
         return weaponToReturn;
     }
 
-    public async Task<WeaponDto> GetWeaponASync(string name, bool trackChanges)
+    public async Task<WeaponDto> GetWeaponAsync(string name, bool trackChanges)
     {
        await CheckIfWeaponExistByName(name, trackChanges);
         var weapon = await _repository.Weapon.GetWeapon(name, trackChanges);

@@ -12,6 +12,7 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
 "/nlog.config"));
 
 // Add services to the container.
+
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(Webbgame.Presentation.AssemblyReference).Assembly);
 
@@ -29,7 +30,7 @@ builder.Services.ConfigureSwaggerGen();
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
-builder.Services.AddScoped<IWeaponSevice, AuthenService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenService>();
 
 
 
