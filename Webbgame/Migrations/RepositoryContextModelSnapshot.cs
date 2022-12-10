@@ -24,9 +24,11 @@ namespace Webbgame.Migrations
 
             modelBuilder.Entity("Entities.Models.Characters", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CharacterName")
                         .IsRequired()
@@ -38,15 +40,15 @@ namespace Webbgame.Migrations
                     b.Property<int>("Money")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("SkillsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("SkillsId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("WeaponsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("WeaponsId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -59,9 +61,11 @@ namespace Webbgame.Migrations
 
             modelBuilder.Entity("Entities.Models.Mission", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Money")
                         .HasColumnType("int");
@@ -77,12 +81,14 @@ namespace Webbgame.Migrations
 
             modelBuilder.Entity("Entities.Models.Skills", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RobberyLV")
                         .HasColumnType("int");
@@ -125,9 +131,11 @@ namespace Webbgame.Migrations
 
             modelBuilder.Entity("Entities.Models.Weapon", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()

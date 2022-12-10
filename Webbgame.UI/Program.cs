@@ -1,15 +1,41 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Webbgame.UI;
-using Webbgame.UI.Extensions;
+using WebbGame.Ui;
+using WebbGame.Ui.Data;
+using WebbGame.Ui.Service;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/") });
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddHttpClient();
+builder.Services.AddServerSideBlazor();
 
-builder.Services.ConfigureServiceManager();
+builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthService>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
 
+var app = builder.Build();
 
-await builder.Build().RunAsync();
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
+
+app.Run();

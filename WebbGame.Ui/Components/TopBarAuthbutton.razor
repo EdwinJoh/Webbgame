@@ -1,0 +1,13 @@
+﻿<button class="btn btn-primary" @onclick="Logout">Logout</button>
+@inject ILocalStorageService storage
+@inject NavigationManager nav
+@code {
+
+
+    private void Logout()
+    {
+        storage.ClearAsync();
+        StateHasChanged();
+        nav.NavigateTo("/login");
+    }
+}

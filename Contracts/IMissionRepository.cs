@@ -4,7 +4,7 @@ namespace Contracts;
 
 public interface IMissionRepository
 {
-    Task<Mission> GetMission(Guid id, bool trackChanges);
+    Task<Mission> GetMission(int id, bool trackChanges);
     Task<IEnumerable<Mission>> GetMissions(bool trackChanges);
     void CreateMission(Mission mission);
     void DeleteMission(Mission mission);

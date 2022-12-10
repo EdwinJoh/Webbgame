@@ -1,0 +1,37 @@
+﻿@page "/login"
+
+@inject IAuthService authservice
+@inject ILocalStorageService localStorage
+@inject AuthenticationStateProvider AutenticationStateProvider
+@inject NavigationManager _nav
+
+<div class="container">
+    <div class="login-box">
+        <div class="title">
+            <h5>Login</h5>
+
+        </div>
+        <div class="form">
+            <label for="username">Username</label>
+            <input @bind-value="user.Email" type="text" />
+            <label for="password">Password</label>
+            <input @bind-value="user.Password" type="password" />
+
+            <button class="btn btn-primary" @onclick="HandleLogin">Login</button>
+        </div>
+    </div>
+</div>
+@code {
+    private UserLogin user = new();
+
+    private async Task HandleLogin()
+    {
+        var result =await  authservice.Login(user);
+
+        if(result.Success){
+            await localStorage.SetItemAsync("authToken", result.Data);
+            await AutenticationStateProvider.GetAuthenticationStateAsync();
+            _nav.NavigateTo("/");
+        }
+    }
+}

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using SharedHelpers.DTO.CharacterDtos.Weapons;
 
 namespace Webbgame.Presentation.Controllers;
 
-[ApiController]
-[Route("api/weapon")]
+[Route("weapon")]
 public class WeaponController : ControllerBase
 {
     private readonly IServiceManager _service;
@@ -16,11 +16,17 @@ public class WeaponController : ControllerBase
 		var weapons = await _service.WeaponService.GetAllWeaponsAsync(trackChanges: false);
 		return Ok(weapons);
 	}
-	[HttpGet("id:guid")]
+	[HttpGet("id:int")]
 	public async Task<IActionResult> GetWeapon(string name)
 	{
 		var weapon = await _service.WeaponService.GetWeaponAsync(name,trackChanges:false);
 		return Ok(weapon);
+	}
+	[HttpPost("createWeapon")]
+	public async Task<IActionResult> CreateWeapon([FromBody] WeaponForCreation weapon)
+	{
+		var weaponCreated = await _service.WeaponService.CreateWeponAsync(weapon, trackChanges: false);
+		return NoContent();
 	}
 	
 }

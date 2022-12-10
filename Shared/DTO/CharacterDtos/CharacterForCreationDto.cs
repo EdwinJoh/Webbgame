@@ -5,7 +5,7 @@ namespace SharedHelpers.DTO.CharacterDtos;
 
 public record CharacterForCreationDto
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string UserEmail { get; set; }
     [Required]
     public string CharacterName { get; set; }

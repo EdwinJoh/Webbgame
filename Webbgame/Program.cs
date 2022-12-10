@@ -1,4 +1,5 @@
 using Contracts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using Service;
@@ -30,7 +31,7 @@ builder.Services.ConfigureSwaggerGen();
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
-builder.Services.AddScoped<IAuthenticationService, AuthenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
@@ -47,8 +48,9 @@ if (app.Environment.IsProduction())
 app.UseSwagger();
 app.UseSwaggerUI(s =>
 {
-    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Maze API v1");
+  
     s.SwaggerEndpoint("/swagger/v2/swagger.json", "Code Maze API v2");
+    s.SwaggerEndpoint("/swagger/v3/swagger.json", "Code Maze API v3");
 });
 
 app.UseHttpsRedirection();

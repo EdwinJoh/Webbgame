@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Webbgame.UI</a>
+        <a class="navbar-brand" href="">WebbGame.Ui</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -14,21 +14,21 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="createcharacter">
-                        <span class="oi oi-plus" aria-hidden="true"></span> CreateCharacter
+        <div class="nav-item px-3">
+            <AuthorizeView>
+                <NotAuthorized>
+                    <NavLink class="nav-link" href="login">
+                        <span class="oi oi-plus" aria-hidden="true"></span> login
                     </NavLink>
-                </div>
 
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="createjob">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span>Create Job
-                    </NavLink>
-                </div>
-            </Authorized>
-        </AuthorizeView>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="createCharacter">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> CreateCharacter
+            </NavLink>
+        </div>
     </nav>
 </div>
 

@@ -7,7 +7,7 @@ using SharedHelpers.DTO.MissionDtos;
 
 namespace Service;
 
-public class MissionService : IMissionService
+internal sealed class MissionService : IMissionService
 {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
@@ -20,7 +20,7 @@ public class MissionService : IMissionService
         _mapper = mapper;
     }
 
-    public async Task<MissionDto> GetMissionAsync(Guid guid, bool trackChanges)
+    public async Task<MissionDto> GetMissionAsync(int guid, bool trackChanges)
     {
         await CheckIfMissionExist(guid);
         var mission = await _repository.Mission.GetMission(guid, trackChanges);
@@ -40,7 +40,7 @@ public class MissionService : IMissionService
 
     public async Task<MissionDto> CreateMissionAsync(MissionForCreateDto mission, bool trackChanges)
     {
-        mission.Id = Guid.NewGuid();
+        
         mission.Name = mission.Name.ToLower();
         var missionEntity = _mapper.Map<Mission>(mission);
 
@@ -51,11 +51,11 @@ public class MissionService : IMissionService
         return missionToReturn;
     }
 
-    private async Task CheckIfMissionExist(Guid id)
+    private async Task CheckIfMissionExist(int id)
     {
         var mission = await _repository.Mission.GetMission(id, trackChanges: false);
-        if (mission == null)
-            throw new MissionNotFound(mission.Id);
+        if (mission == null) {return; }
+            //throw new MissionNotFound(mission.Id);
     }
 
     public async Task<MissionDto> GetMissionByName(string name, bool trackChanges)
@@ -74,7 +74,8 @@ public class MissionService : IMissionService
         var mission = await _repository.Mission.GetMissionByName(name, trackChanges: false);
 
         if (mission == null)
-            throw new MissionNotFound(mission.Id);
+            return false;
+            //throw new MissionNotFound(mission.Id);
         return true;
     }
 }

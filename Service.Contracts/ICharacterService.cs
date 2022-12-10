@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Contracts
+namespace Service.Contracts;
+
+public interface ICharacterService
 {
-    public interface ICharacterService
-    {
-        Task<CharacterDto> GetCharacterAsync(string email, bool trackChanges);
-        Task<CharacterDto> CreateCharacterAsync(CharacterForCreationDto character);
-        Task UpdateCharacter(Guid id, CharacterFotUpdateDto character, bool trackChanges);
-    }
+    Task<List<CharacterDto>> GetCharacters(bool trackChanges);
+    Task<CharacterDto> GetCharacter(int id,bool trackChanges);
+    Task<CharacterDto> CreateCharacter(CharacterForCreationDto character);
 }

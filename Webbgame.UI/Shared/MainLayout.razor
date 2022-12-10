@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
+<PageTitle>WebbGame.Ui</PageTitle>
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -7,13 +9,14 @@
 
     <main>
         <div class="top-row px-4">
-            <CharcterBar />
-            <LoginBar />
-            
+            <AuthorizeView>
+                <Authorized>
+                    @context.User.Identity.Name
+                    <TopBarAuthbutton />
+                </Authorized>
+            </AuthorizeView>
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
-        <MudThemeProvider />
-        <MudDialogProvider />
-        <MudSnackbarProvider />
 
         <article class="content px-4">
             @Body

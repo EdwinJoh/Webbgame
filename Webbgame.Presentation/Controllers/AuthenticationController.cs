@@ -6,13 +6,12 @@ using SheredHelpers;
 
 namespace Webbgame.Presentation.Controllers;
 
-[Route("api/authentication")]
-[ApiController]
+
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthenticationService _autService;
+    private readonly IAuthService _autService;
 
-    public AuthenticationController(IAuthenticationService autService) => _autService = autService;
+    public AuthenticationController(IAuthService autService) => _autService = autService;
 
     /// <summary>
     /// Register an user to our application.
@@ -35,7 +34,7 @@ public class AuthenticationController : ControllerBase
     /// Log in an user to our application.
     /// </summary>
     [HttpPost("login")]
-    public async Task<ActionResult<ServiceResponse<string>>> Login(UserLogin request)
+    public async Task<ActionResult<ServiceResponse<string>>> Login([FromBody] UserLogin request)
     {
         var respons = await _autService.Login(request.Email, request.Password);
 

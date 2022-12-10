@@ -1,0 +1,41 @@
+﻿@page "/createCharacter"
+@inject AuthenticationStateProvider state
+@inject ICharacterService service
+@if (newCharacter.UserEmail != null)
+{
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="Email" aria-describedby="emailHelp" disabled @bind-value="@newCharacter.UserEmail">
+        </div>
+
+        <div class="form-group">
+            <label for="Username">Enter username</label>
+            <input type="text" class="form-control" id="CharacterName" @bind-value="@newCharacter.CharacterName">
+        </div>
+
+        <button @onclick="CreateCharacterAsync" class="btn btn-primary">Submit</button>
+    </form>
+
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private CharacterForCreationDto newCharacter = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authstate = await state.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        newCharacter.UserEmail = user.Identity.Name;
+        newCharacter.Level = 1;
+    }
+    private async Task CreateCharacterAsync()
+    {
+        await service.CreateCharacterRequest(newCharacter);
+
+    }
+}

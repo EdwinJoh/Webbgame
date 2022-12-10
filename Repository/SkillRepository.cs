@@ -1,21 +1,22 @@
 ﻿using Contracts;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Repository
+namespace Repository;
+
+internal sealed class SkillRepository : RepositoryBase<Skills>, ISkillRepository
 {
-    public class SkillRepository : RepositoryBase<Skills>, ISkillRepository
+    public SkillRepository(RepositoryContext repo) : base(repo)
     {
-        public SkillRepository(RepositoryContext repo) : base(repo)
-        {
 
-        }
-        public async Task<Skills> GetSkill(Guid id,bool trackChanges) =>
-            await FindByCondition(x => x.CharacterId == id,trackChanges).SingleOrDefaultAsync();
     }
+   
+
+    public async Task<Skills> GetSkillById(int id, bool trackChanges) =>
+       await FindByCondition(x => x.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
+
+    public async Task<List<Skills>> GetSkills(bool trackChanges) =>
+        await FindAll(trackChanges).ToListAsync();
+    public void CreateSkill(Skills skill) => Create(skill);
+
 }

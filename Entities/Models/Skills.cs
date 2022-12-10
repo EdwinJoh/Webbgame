@@ -2,7 +2,7 @@
 
 public class Skills
 {
-    public Guid Id { get; set; }
-    public Guid CharacterId { get; set; }
+    public int Id { get; set; }
+    public int CharacterId { get; set; }
     public int RobberyLV { get; set; }
 }

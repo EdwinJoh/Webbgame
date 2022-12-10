@@ -11,12 +11,12 @@ using System.Security.Cryptography;
 
 namespace Service;
 
-public class AuthenService : IAuthenticationService
+public class AuthService : IAuthService
 {
     private readonly RepositoryContext _context;
     private readonly IConfiguration _configuration;
 
-    public AuthenService(RepositoryContext context, IConfiguration configuration)
+    public AuthService(RepositoryContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;

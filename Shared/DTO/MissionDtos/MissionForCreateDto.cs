@@ -4,7 +4,7 @@ namespace SharedHelpers.DTO.MissionDtos;
 
 public class MissionForCreateDto
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     [Required]
     public string Name { get; set; }
     public int Money { get; set; }

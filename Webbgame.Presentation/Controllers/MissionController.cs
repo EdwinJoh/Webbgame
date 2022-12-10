@@ -6,8 +6,7 @@ using SharedHelpers.DTO.MissionDtos;
 
 namespace Webbgame.Presentation.Controllers;
 
-[ApiController]
-[Route("api/mission")]
+[Route("mission")]
 public class MissionController : ControllerBase
 {
     private readonly IServiceManager _service;
@@ -20,8 +19,8 @@ public class MissionController : ControllerBase
         return Ok(missions);
     }
 
-    [HttpGet("id:guid")]
-    public async Task<IActionResult> GetMission(Guid id)
+    [HttpGet("id:int")]
+    public async Task<IActionResult> GetMission(int id)
     {
         var mission = await _service.MissionService.GetMissionAsync(id, trackChanges: false);
         return Ok(mission);

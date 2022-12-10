@@ -6,12 +6,13 @@ using Service.Contracts;
 
 namespace Service;
 
-public class ServiceManager : IServiceManager
+public  class ServiceManager : IServiceManager
 {
     private readonly Lazy<ICharacterService> _characterService;
     private readonly Lazy<IMissionService> _missionService;
-    private readonly Lazy<IAuthenticationService> _authenticationService;
+    private readonly Lazy<Contracts.IAuthService> _authenticationService;
     private readonly Lazy<IWeaponService> _weaponService;
+    private readonly Lazy<ISkillsService> _skillService;
 
     public readonly IMapper _mapper;
     public readonly RepositoryContext repositoryContext;
@@ -26,16 +27,20 @@ public class ServiceManager : IServiceManager
         _missionService = new Lazy<IMissionService>(() => new
         MissionService(repositoryManager, logger, mapper));
 
-        _authenticationService = new Lazy<IAuthenticationService>(() =>
-        new AuthenService(repositoryContext, configuration));
+        _authenticationService = new Lazy<Contracts.IAuthService>(() =>
+        new AuthService(repositoryContext, configuration));
 
         _weaponService = new Lazy<IWeaponService>(() =>
-        new WeaponSevice(repositoryManager,logger,mapper));
+        new WeaponSevice(repositoryManager,logger,mapper)); 
+        
+        _skillService = new Lazy<ISkillsService>(() =>
+        new SkillsService(repositoryManager, logger, mapper));
     }
     public ICharacterService CharacterService => _characterService.Value;
     public IMissionService MissionService => _missionService.Value;
-    public IAuthenticationService AuthenticationService => _authenticationService.Value;
+    public Contracts.IAuthService AuthenticationService => _authenticationService.Value;
     public IWeaponService WeaponService => _weaponService.Value;
+    public ISkillsService SkillService => _skillService.Value;
 
 
 }

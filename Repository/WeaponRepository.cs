@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
 
-public class WeaponRepository : RepositoryBase<Weapon>, IWeaponRepository
+internal sealed class WeaponRepository : RepositoryBase<Weapon>, IWeaponRepository
 {
 	public WeaponRepository(RepositoryContext context) : base(context)
 	{

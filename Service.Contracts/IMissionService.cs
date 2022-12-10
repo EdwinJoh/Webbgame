@@ -5,7 +5,7 @@ namespace Service.Contracts;
 
 public interface IMissionService
 {
-    Task<MissionDto> GetMissionAsync(Guid guid, bool trackChanges);
+    Task<MissionDto> GetMissionAsync(int guid, bool trackChanges);
     Task<IEnumerable<MissionDto>> GetMissionsAsync(bool trackChanges);
     Task<MissionDto> CreateMissionAsync(MissionForCreateDto mission, bool trackChanges);
     Task<MissionDto> GetMissionByName(string name, bool trackChanges);

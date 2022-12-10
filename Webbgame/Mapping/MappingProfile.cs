@@ -3,6 +3,7 @@ using Entities.Models;
 using SharedHelpers.DTO.CharacterDtos;
 using SharedHelpers.DTO.CharacterDtos.Weapons;
 using SharedHelpers.DTO.MissionDtos;
+using SharedHelpers.DTO.SkillsDtos;
 
 namespace Webbgame.Mapping
 {
@@ -22,7 +23,10 @@ namespace Webbgame.Mapping
 
             CreateMap<WeaponDto, Weapon>();
             CreateMap<Weapon, WeaponDto>();
-            CreateMap<WeaponForCreation,WeaponDto>();
+            CreateMap<WeaponForCreation,Weapon>();
+
+            CreateMap<Skills, SkillDto>();
+            CreateMap<SkillDto, Skills>();
 
         }
     }

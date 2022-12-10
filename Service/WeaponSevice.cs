@@ -7,7 +7,7 @@ using SharedHelpers.DTO.CharacterDtos.Weapons;
 
 namespace Service;
 
-public class WeaponSevice : IWeaponService
+internal sealed class WeaponSevice : IWeaponService
 {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
