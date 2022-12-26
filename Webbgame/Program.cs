@@ -1,21 +1,21 @@
 using Contracts;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using Service;
 using Service.Contracts;
 using Webbgame.Extensions;
+using Webbgame.Presentation;
 using Webbgame.Presentation.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
-"/nlog.config"));
+    "/nlog.config"));
 
 // Add services to the container.
 
 builder.Services.AddControllers()
-    .AddApplicationPart(typeof(Webbgame.Presentation.AssemblyReference).Assembly);
+    .AddApplicationPart(typeof(AssemblyReference).Assembly);
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
@@ -28,11 +28,9 @@ builder.Services.AddAuthentication();
 builder.Services.ConfigureSwaggerGen();
 
 
-
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-
 
 
 var app = builder.Build();
@@ -48,7 +46,6 @@ if (app.Environment.IsProduction())
 app.UseSwagger();
 app.UseSwaggerUI(s =>
 {
-  
     s.SwaggerEndpoint("/swagger/v2/swagger.json", "Code Maze API v2");
     s.SwaggerEndpoint("/swagger/v3/swagger.json", "Code Maze API v3");
 });
@@ -63,8 +60,6 @@ app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-
 
 
 app.MapControllers();

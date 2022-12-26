@@ -1,13 +1,35 @@
-﻿<button class="btn btn-primary" @onclick="Logout">Logout</button>
-@inject ILocalStorageService storage
-@inject NavigationManager nav
+﻿@inject ILocalStorageService Storage
+@inject NavigationManager Nav
+
+
+<MudButtonGroup Color="Color.Primary" Variant="Variant.Text">
+    <MudButton OnClick="Login">Login</MudButton>
+    <MudButton OnClick="Register">Register</MudButton>
+
+    <AuthorizeView>
+        <MudButton OnClick="Logout">Logout</MudButton>
+    </AuthorizeView>
+</MudButtonGroup>
+
+
 @code {
 
 
     private void Logout()
     {
-        storage.ClearAsync();
+        Storage.ClearAsync();
         StateHasChanged();
-        nav.NavigateTo("/login");
+        Nav.NavigateTo("/login");
     }
+
+    private void Login()
+    {
+        Nav.NavigateTo("/login");
+    }
+
+    private void Register()
+    {
+        Nav.NavigateTo("/register");
+    }
+
 }

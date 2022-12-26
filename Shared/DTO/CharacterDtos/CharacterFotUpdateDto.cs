@@ -1,5 +1,4 @@
 ﻿using Entities.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace SharedHelpers.DTO.CharacterDtos;
 

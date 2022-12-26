@@ -4,9 +4,9 @@ namespace Repository;
 
 public class RepositoryManager : IRepositoryManager
 {
-    private readonly RepositoryContext _repositoryContext;
     private readonly Lazy<ICharacterRepository> _characterRepository;
     private readonly Lazy<IMissionRepository> _missionRepository;
+    private readonly RepositoryContext _repositoryContext;
     private readonly Lazy<ISkillRepository> _skillRepository;
     private readonly Lazy<IWeaponRepository> _weaponRepository;
 
@@ -15,17 +15,16 @@ public class RepositoryManager : IRepositoryManager
     {
         _repositoryContext = repositoryContext;
         _characterRepository = new Lazy<ICharacterRepository>(() => new
-        CharacterRepository(repositoryContext));
+            CharacterRepository(repositoryContext));
 
         _missionRepository = new Lazy<IMissionRepository>(() =>
-        new MissionRepository(repositoryContext));
+            new MissionRepository(repositoryContext));
 
         _skillRepository = new Lazy<ISkillRepository>(() =>
-        new SkillRepository(repositoryContext));
+            new SkillRepository(repositoryContext));
 
-        _weaponRepository = new Lazy<IWeaponRepository> (() =>
-        new WeaponRepository(repositoryContext));
-
+        _weaponRepository = new Lazy<IWeaponRepository>(() =>
+            new WeaponRepository(repositoryContext));
     }
 
     public ICharacterRepository Character => _characterRepository.Value;
@@ -33,6 +32,8 @@ public class RepositoryManager : IRepositoryManager
     public ISkillRepository Skill => _skillRepository.Value;
     public IWeaponRepository Weapon => _weaponRepository.Value;
 
-    public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
-
+    public async Task SaveAsync()
+    {
+        await _repositoryContext.SaveChangesAsync();
+    }
 }

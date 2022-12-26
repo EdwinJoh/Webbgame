@@ -4,10 +4,10 @@ namespace SharedHelpers.DTO.UserDto;
 
 public class UserRegister
 {
-    [Required, EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
 
-    [Required, StringLength(100, MinimumLength = 6)]
+    [Required]
+    [StringLength(100, MinimumLength = 6)]
     public string Password { get; set; } = string.Empty;
 
     [Compare("Password", ErrorMessage = "The passwords do not match")]

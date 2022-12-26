@@ -7,5 +7,4 @@ public interface IServiceManager
     IMissionService MissionService { get; }
     IWeaponService WeaponService { get; }
     ISkillsService SkillService { get; }
-
 }

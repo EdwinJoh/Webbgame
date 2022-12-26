@@ -1,7 +1,6 @@
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
+using MudBlazor.Services;
 using WebbGame.Ui;
 using WebbGame.Ui.Data;
 using WebbGame.Ui.Service;
@@ -18,6 +17,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthService>();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

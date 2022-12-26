@@ -1,28 +1,30 @@
-﻿using Entities.Models;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Service.Contracts;
 using SheredHelpers;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
 
 namespace Service;
 
 public class AuthService : IAuthService
 {
-    private readonly RepositoryContext _context;
     private readonly IConfiguration _configuration;
+    private readonly RepositoryContext _context;
 
     public AuthService(RepositoryContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;
     }
+
     /// <summary>
-    /// Logs in a user to the appication 
+    ///     Logs in a user to the appication
     /// </summary>
     /// <param name="email"></param>
     /// <param name="password"></param>
@@ -45,36 +47,34 @@ public class AuthService : IAuthService
         {
             respons.Data = CreateToken(user);
         }
+
         return respons;
     }
 
     /// <summary>
-    /// This service register an user to the database.
-    /// it checks if the user email already exist or not before saving the new user.
-    /// And save the password as an hash.
+    ///     This service register an user to the database.
+    ///     it checks if the user email already exist or not before saving the new user.
+    ///     And save the password as an hash.
     /// </summary>
     public async Task<ServiceResponse<int>> Register(User user, string password)
     {
         if (await UserExist(user.Email))
-        {
             return new ServiceResponse<int>
             {
                 Success = false,
                 Message = "User already exist"
             };
-        }
-        CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+        CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
 
         user.PasswordHash = passwordHash;
         user.PasswordSalt = passwordSalt;
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return new ServiceResponse<int> { Data = user.Id, Message = "Registration Successfull" };
-
     }
 
     /// <summary>
-    /// Method that check if the user aleady exist in the database searching for the email that the user puts in.
+    ///     Method that check if the user aleady exist in the database searching for the email that the user puts in.
     /// </summary>
     public async Task<bool> UserExist(string email)
     {
@@ -85,7 +85,7 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Method that creates and set password hash and salt.
+    ///     Method that creates and set password hash and salt.
     /// </summary>
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
@@ -93,36 +93,35 @@ public class AuthService : IAuthService
         {
             passwordSalt = hmac.Key;
             passwordHash = hmac
-                .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                .ComputeHash(Encoding.UTF8.GetBytes(password));
         }
     }
 
     /// <summary>
-    /// This method verify the password the user puts in and hash it to match the password hash in the database.
+    ///     This method verify the password the user puts in and hash it to match the password hash in the database.
     /// </summary>
     private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
     {
         using (var hmac = new HMACSHA512(passwordSalt))
         {
-            var computedHas = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            var computedHas = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             return computedHas.SequenceEqual(passwordHash);
         }
     }
 
     /// <summary>
-    /// Method that create an token to help the user stay login and set the login timer / token timer to expire after one day.
+    ///     Method that create an token to help the user stay login and set the login timer / token timer to expire after one
+    ///     day.
     /// </summary>
-
     private string? CreateToken(User user)
     {
-        List<Claim> claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-        new Claim(ClaimTypes.Name,user.Email),
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, user.Email)
+        };
 
-    };
-
-        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8
+        var key = new SymmetricSecurityKey(Encoding.UTF8
             .GetBytes(_configuration.GetSection("AppSettings:Token").Value));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -135,8 +134,4 @@ public class AuthService : IAuthService
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
         return jwt;
     }
-
-
-
 }
-

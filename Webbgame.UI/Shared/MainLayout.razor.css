@@ -11,8 +11,8 @@ main {
 
 .sidebar {
     background-color: black;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
 }
 
 .top-row {
@@ -22,20 +22,20 @@ main {
     height: 3.5rem;
     display: flex;
     align-items: center;
-    border-bottom :10px;
-    color:white;
-    
+    border-bottom: 10px;
+    color: white;
+
 }
 
-    .top-row ::deep a, .top-row .btn-link {
-        white-space: nowrap;
-        margin-left: 1.5rem;
-    }
+.top-row ::deep a, .top-row .btn-link {
+    white-space: nowrap;
+    margin-left: 1.5rem;
+}
 
-    .top-row a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.top-row a:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {

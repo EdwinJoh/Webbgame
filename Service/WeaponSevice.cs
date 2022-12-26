@@ -9,9 +9,9 @@ namespace Service;
 
 internal sealed class WeaponSevice : IWeaponService
 {
-    private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
+    private readonly IRepositoryManager _repository;
 
     public WeaponSevice(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
     {
@@ -33,7 +33,7 @@ internal sealed class WeaponSevice : IWeaponService
 
     public async Task<WeaponDto> GetWeaponAsync(string name, bool trackChanges)
     {
-       await CheckIfWeaponExistByName(name, trackChanges);
+        await CheckIfWeaponExistByName(name, trackChanges);
         var weapon = await _repository.Weapon.GetWeapon(name, trackChanges);
         var weaponDto = _mapper.Map<WeaponDto>(weapon);
 
@@ -47,7 +47,7 @@ internal sealed class WeaponSevice : IWeaponService
         return weaponDto;
     }
 
-    private async Task CheckIfWeaponExistByName(string name,bool trackChanges)
+    private async Task CheckIfWeaponExistByName(string name, bool trackChanges)
     {
         var weapon = await _repository.Weapon.GetWeapon(name, trackChanges);
         if (weapon == null)

@@ -2,17 +2,21 @@
 
 <PageTitle>WebbGame.Ui</PageTitle>
 
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu/>
     </div>
 
     <main>
         <div class="top-row px-4">
+            <TopBarAuthbutton/>
             <AuthorizeView>
                 <Authorized>
                     @context.User.Identity.Name
-                    <TopBarAuthbutton />
                 </Authorized>
             </AuthorizeView>
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>

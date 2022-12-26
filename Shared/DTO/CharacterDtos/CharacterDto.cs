@@ -10,6 +10,4 @@ public record CharacterDto
     public int Level { get; set; }
     public Skills Skills { get; init; }
     public int Money { get; set; }
-
 }
-

@@ -3,19 +3,14 @@ using Contracts;
 using Repository;
 using Service.Contracts;
 using SharedHelpers.DTO.SkillsDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service;
 
 public class SkillsService : ISkillsService
 {
-    private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
+    private readonly IRepositoryManager _repository;
     private readonly RepositoryContext _repositoryContext;
 
     public SkillsService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
@@ -43,6 +38,5 @@ public class SkillsService : ISkillsService
 
         var skillDto = _mapper.Map<SkillDto>(skill);
         return skillDto;
-
     }
 }

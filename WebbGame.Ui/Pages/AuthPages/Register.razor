@@ -1,32 +1,45 @@
-﻿<h3>Register</h3>
-  
+﻿@page "/register"
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+<h3>Register</h3>
+
 <div class="container">
     <div class="login-box">
         <div class="title">
-            <h5>Login</h5>
+            <h5>Register</h5>
 
         </div>
         <div class="form">
-            <label for="username">Username</label>
-            <input @bind-value="user.Email" type="text" />
-            <label for="password">Password</label>
-            <input @bind-value="user.Password" type="password" />
-
-            <button class="btn btn-primary" @onclick="HandleLogin">Login</button>
+            <label>Username</label>
+            <input @bind-value="user.Email" type="text"/>
+            <label>Password</label>
+            <input @bind-value="user.Password" type="password"/>
+            <label>Confirm Password</label>
+            <input @bind-value="user.ConfirmPassword" type="password"/>
+            <button class="btn btn-primary" @onclick="HandleRegister">Login</button>
+            <h1>@Message</h1>
         </div>
     </div>
 </div>
+
 @code {
-    private UserRegister user = new();
+    private readonly UserRegister user = new();
+    private string Message;
 
-    private async Task HandleLogin()
+    private async Task HandleRegister()
     {
-        var result =await  authservice.Login(user);
-
-        if(result.Success){
-            await localStorage.SetItemAsync("authToken", result.Data);
-            await AutenticationStateProvider.GetAuthenticationStateAsync();
-            _nav.NavigateTo("/");
+        var register = await AuthService.Register(user);
+        if (register.Success)
+        {
+            Message = "Registration successfull";
+            Task.Delay(2000);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            Message = "Registration was not successfull";
+            
         }
     }
+
 }

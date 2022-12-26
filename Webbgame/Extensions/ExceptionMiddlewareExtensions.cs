@@ -1,15 +1,15 @@
-﻿using Contracts;
+﻿using System.Net;
+using Contracts;
 using Entities.ErrorModel;
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
-using System.Net;
 
 namespace Webbgame.Extensions;
 
 public static class ExceptionMiddlewareExtensions
 {
     public static void ConfigureExceptionHandler(this WebApplication app,
-   ILoggerManager logger)
+        ILoggerManager logger)
     {
         app.UseExceptionHandler(appError =>
         {
@@ -27,14 +27,13 @@ public static class ExceptionMiddlewareExtensions
                     };
 
                     logger.LogError($"Something went wrong: {contextFeature.Error}");
-                    await context.Response.WriteAsync(new ErrorDetails()
+                    await context.Response.WriteAsync(new ErrorDetails
                     {
                         StatusCode = context.Response.StatusCode,
-                        Message = contextFeature.Error.Message,
+                        Message = contextFeature.Error.Message
                     }.ToString());
                 }
             });
         });
     }
 }
-

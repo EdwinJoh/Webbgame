@@ -1,12 +1,7 @@
 ﻿using SharedHelpers.DTO.CharacterDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
 
 namespace WebbGame.Ui.Service;
+
 public interface ICharacterService
 {
     Task CreateCharacterRequest(CharacterForCreationDto character);
@@ -14,15 +9,16 @@ public interface ICharacterService
 
 public class CharacterService : ICharacterService
 {
-    private readonly HttpClient httpClient;
-    public CharacterService(HttpClient Http)
+    private readonly HttpClient _httpClient;
+
+    public CharacterService(HttpClient http)
     {
-        httpClient = Http;
+        _httpClient = http;
     }
 
 
     public async Task CreateCharacterRequest(CharacterForCreationDto character)
     {
-        var request = await httpClient.PostAsJsonAsync("https://localhost:5001/createCharacter", character);
+        var request = await _httpClient.PostAsJsonAsync("https://localhost:5001/createCharacter", character);
     }
 }

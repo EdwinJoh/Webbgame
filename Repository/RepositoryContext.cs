@@ -7,7 +7,6 @@ public class RepositoryContext : DbContext
 {
     public RepositoryContext(DbContextOptions options) : base(options)
     {
-
     }
     //protected override void OnModelCreating(ModelBuilder modelBuilder)
     //{
@@ -21,6 +20,4 @@ public class RepositoryContext : DbContext
     public DbSet<Characters> Characters { get; set; }
     public DbSet<Mission> Missions { get; set; }
     public DbSet<Weapon> Weapons { get; set; }
-
-
 }

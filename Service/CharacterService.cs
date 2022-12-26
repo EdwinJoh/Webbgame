@@ -1,24 +1,23 @@
-﻿using AutoMapper;
+﻿using System.Xml.Schema;
+using AutoMapper;
 using Contracts;
-using Service.Contracts;
-using Entities.Models;
-using System.Net.Http.Headers;
-using Repository;
-using Microsoft.EntityFrameworkCore;
-using SharedHelpers.DTO.MissionDtos;
 using Entities.Exceptions;
+using Entities.Models;
+using Repository;
+using Service.Contracts;
 using SharedHelpers.DTO.CharacterDtos;
 
 namespace Service;
 
 internal sealed class CharacterService : ICharacterService
 {
-    private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
+    private readonly IRepositoryManager _repository;
     private readonly RepositoryContext _repositoryContext;
 
-    public CharacterService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, RepositoryContext context)
+    public CharacterService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper,
+        RepositoryContext context)
     {
         _repository = repository;
         _logger = logger;
@@ -49,22 +48,24 @@ internal sealed class CharacterService : ICharacterService
 
     public async Task<CharacterDto> CreateCharacter(CharacterForCreationDto character)
     {
-
         var characterEntity = _mapper.Map<Characters>(character);
-
+        _repository.Character.CreateCharacter(characterEntity);
+        await _repository.SaveAsync();
+        var characters = await _repository.Character.GetCharactersAsync(trackChanges:false);
+        var test = characters.Where(x => x.UserEmail == character.UserEmail).FirstOrDefault();
         var skill = new Skills
         {
-            CharacterId = character.Id,
+            CharacterId = test.Id,
             RobberyLV = 1
         };
         characterEntity.Skills = skill;
 
         _repository.Skill.CreateSkill(skill);
-        _repository.Character.CreateCharacter(characterEntity);
 
-        await _repository.SaveAsync();
+        var user = _repositoryContext.Users.SingleOrDefault(x => x.Email == character.UserEmail);
+        user.GameTag = character.CharacterName;
+
         var characterReturn = _mapper.Map<CharacterDto>(characterEntity);
         return characterReturn;
     }
-
 }

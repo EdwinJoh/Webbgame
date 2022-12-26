@@ -1,75 +1,74 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 
-namespace WebbGame.Ui
+namespace WebbGame.Ui;
+
+public class CustomAuthService : AuthenticationStateProvider
 {
-    public class CustomAuthService : AuthenticationStateProvider
+    private readonly HttpClient _http;
+
+    private readonly ILocalStorageService _localStorageService;
+
+    public CustomAuthService(ILocalStorageService localStorageService, HttpClient http)
     {
+        _localStorageService = localStorageService;
+        _http = http;
+    }
 
-        private readonly ILocalStorageService _localStorageService;
-        private readonly HttpClient _http;
+    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+    {
+        var authToken = await _localStorageService.GetItemAsStringAsync("authToken");
 
-        public CustomAuthService(ILocalStorageService localStorageService, HttpClient http)
-        {
-            _localStorageService = localStorageService;
-            _http = http;
-        }
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-        {
-            string authToken = await _localStorageService.GetItemAsStringAsync("authToken");
+        var identity = new ClaimsIdentity();
+        _http.DefaultRequestHeaders.Authorization = null;
 
-            var identity = new ClaimsIdentity();
-            _http.DefaultRequestHeaders.Authorization = null;
-
-            if (!string.IsNullOrEmpty(authToken))
+        if (!string.IsNullOrEmpty(authToken))
+            try
             {
-                try
-                {
-                    identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
-                    _http.DefaultRequestHeaders.Authorization =
-                        new AuthenticationHeaderValue("Bearer", authToken.Replace("\"", ""));
-                }
-                catch
-                {
-                    await _localStorageService.RemoveItemAsync("authToken");
-                    identity = new ClaimsIdentity();
-                }
+                identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
+                _http.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", authToken.Replace("\"", ""));
             }
-            var user = new ClaimsPrincipal(identity);
-            var state = new AuthenticationState(user);
-
-            NotifyAuthenticationStateChanged(Task.FromResult(state));
-            return state;
-
-        }
-
-        private byte[] ParseBase64WhitoutPadding(string base64)
-        {
-            switch (base64.Length % 4)
+            catch
             {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
+                await _localStorageService.RemoveItemAsync("authToken");
+                identity = new ClaimsIdentity();
             }
-            return Convert.FromBase64String(base64);
-        }
-        private IEnumerable<Claim>? ParseClaimsFromJwt(string jwt)
+
+        var user = new ClaimsPrincipal(identity);
+        var state = new AuthenticationState(user);
+
+        NotifyAuthenticationStateChanged(Task.FromResult(state));
+        return state;
+    }
+
+    private byte[] ParseBase64WhitoutPadding(string base64)
+    {
+        switch (base64.Length % 4)
         {
-            var payload = jwt.Split('.')[1];
-            var jsonBytes = ParseBase64WhitoutPadding(payload);
-
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-
-            var claims = keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
-
-            return claims;
+            case 2:
+                base64 += "==";
+                break;
+            case 3:
+                base64 += "=";
+                break;
         }
+
+        return Convert.FromBase64String(base64);
+    }
+
+    private IEnumerable<Claim>? ParseClaimsFromJwt(string jwt)
+    {
+        var payload = jwt.Split('.')[1];
+        var jsonBytes = ParseBase64WhitoutPadding(payload);
+
+        var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+
+        var claims = keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
+
+        return claims;
     }
 }
