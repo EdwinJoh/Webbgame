@@ -51,20 +51,23 @@ internal sealed class CharacterService : ICharacterService
         var characterEntity = _mapper.Map<Characters>(character);
         _repository.Character.CreateCharacter(characterEntity);
         await _repository.SaveAsync();
-        var characters = await _repository.Character.GetCharactersAsync(trackChanges:false);
-        var test = characters.Where(x => x.UserEmail == character.UserEmail).FirstOrDefault();
+
+        var characters = await _repository.Character.GetCharactersAsync(trackChanges: false);
+        var test = characters.FirstOrDefault(x => x.UserEmail == character.UserEmail);
         var skill = new Skills
         {
             CharacterId = test.Id,
             RobberyLV = 1
         };
-        characterEntity.Skills = skill;
 
+        characterEntity.Skills = skill;
         _repository.Skill.CreateSkill(skill);
 
-        var user = _repositoryContext.Users.SingleOrDefault(x => x.Email == character.UserEmail);
+        await _repository.SaveAsync();
+        var user = _repositoryContext.Users.SingleOrDefault(x => x.Email.Equals(character.UserEmail));
         user.GameTag = character.CharacterName;
 
+        await _repositoryContext.SaveChangesAsync();
         var characterReturn = _mapper.Map<CharacterDto>(characterEntity);
         return characterReturn;
     }

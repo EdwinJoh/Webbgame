@@ -15,10 +15,10 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IMissionService> _missionService;
     private readonly Lazy<ISkillsService> _skillService;
     private readonly Lazy<IWeaponService> _weaponService;
-    public readonly RepositoryContext repositoryContext;
+    
 
     public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager
-        logger, IMapper mapper, IConfiguration configuration)
+        logger, IMapper mapper, IConfiguration configuration, RepositoryContext repositoryContext)
     {
         _characterService = new Lazy<ICharacterService>(() => new
             CharacterService(repositoryManager, logger, mapper, repositoryContext));
