@@ -36,10 +36,13 @@ public class CharacterController : ControllerBase
         return Ok(character);
     }
 
-    //[HttpPut("{id:guid}")]
-    //public async Task<IActionResult> UpdateCharacter(Guid id, [FromBody] CharacterFotUpdateDto character)
-    //{
-    //    await _service.CharacterService.UpdateCharacter(id, character, trackChanges: true);
-    //    return NoContent();
-    //}
+    [HttpGet("getcharacterbyemail")]
+    public async Task<IActionResult> GetCharacterByEmail(string email)
+    {
+        var characters = await _service.CharacterService.GetCharacters(trackChanges:false);
+        var character = characters.SingleOrDefault(x => x.UserEmail == email);
+        return Ok(character);
+    }
+
+  
 }

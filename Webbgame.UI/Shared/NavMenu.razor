@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject ICharacterService Service
+@inject AuthenticationStateProvider State
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">WebbGame.Ui</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -24,22 +27,34 @@
                 </NotAuthorized>
             </AuthorizeView>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="createCharacter">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> CreateCharacter
-            </NavLink>
-        </div>
+        
+        @if (_character == null)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="createCharacter">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> CreateCharacter
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool _collapseNavMenu = true;
+    private CharacterDto _character;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authstate = await State.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        _character = await Service.CheckIfCharacterExist(user.Identity?.Name);
+    }
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 
 }
