@@ -36,13 +36,7 @@ public class CharacterController : ControllerBase
         return Ok(character);
     }
 
-    [HttpGet("getcharacterbyemail")]
-    public async Task<IActionResult> GetCharacterByEmail(string email)
-    {
-        var characters = await _service.CharacterService.GetCharacters(trackChanges:false);
-        var character = characters.SingleOrDefault(x => x.UserEmail == email);
-        return Ok(character);
-    }
+   
 
   
 }

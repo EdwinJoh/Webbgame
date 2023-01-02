@@ -25,7 +25,6 @@ internal sealed class CharacterService : ICharacterService
         _repositoryContext = context;
     }
 
-
     public async Task<List<CharacterDto>> GetCharacters(bool trackChanges)
     {
         var characters = await _repository.Character.GetCharactersAsync(trackChanges);

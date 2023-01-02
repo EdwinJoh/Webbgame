@@ -1,13 +1,15 @@
 ﻿@inject ILocalStorageService Storage
 @inject NavigationManager Nav
 
-
 <MudButtonGroup Color="Color.Primary" Variant="Variant.Text">
-    <MudButton OnClick="Login">Login</MudButton>
-    <MudButton OnClick="Register">Register</MudButton>
-
     <AuthorizeView>
-        <MudButton OnClick="Logout">Logout</MudButton>
+        <Authorized>
+            <MudButton OnClick="Logout">Logout</MudButton>
+        </Authorized>
+        <NotAuthorized>
+            <MudButton OnClick="Login">Login</MudButton>
+            <MudButton OnClick="Register">Register</MudButton>
+        </NotAuthorized>
     </AuthorizeView>
 </MudButtonGroup>
 

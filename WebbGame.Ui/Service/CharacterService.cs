@@ -1,11 +1,12 @@
-﻿using SharedHelpers.DTO.CharacterDtos;
+﻿using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+using SharedHelpers.DTO.CharacterDtos;
 
 namespace WebbGame.Ui.Service;
 
 public interface ICharacterService
 {
     Task CreateCharacterRequest(CharacterForCreationDto character);
-    Task<CharacterDto?> CheckIfCharacterExist(string email);
+    Task<List<CharacterDto>> GetCharacters();
 }
 
 public class CharacterService : ICharacterService
@@ -23,11 +24,11 @@ public class CharacterService : ICharacterService
         var request = await _httpClient.PostAsJsonAsync("https://localhost:5001/createCharacter", character);
     }
 
-
-    public async Task<CharacterDto?> CheckIfCharacterExist(string email)
+    public async Task<List<CharacterDto>> GetCharacters()
     {
-        var character =
-            await _httpClient.GetFromJsonAsync<CharacterDto>($"https://localhost:5001/getcharacterbyemail{email}");
-        return character;
+        var request = await _httpClient.GetFromJsonAsync<List<CharacterDto>>("https://localhost:5001/getallcharcters");
+        return request!;
     }
+
+    
 }

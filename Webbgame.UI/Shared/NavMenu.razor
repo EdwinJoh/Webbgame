@@ -9,26 +9,29 @@
         </button>
     </div>
 </div>
-
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <AuthorizeView>
-                <NotAuthorized>
-                    <NavLink class="nav-link" href="login">
-                        <span class="oi oi-plus" aria-hidden="true"></span> login
+        <AuthorizeView>
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Weapon Shop
                     </NavLink>
+                </div>
+            </Authorized>
 
-                </NotAuthorized>
-            </AuthorizeView>
-        </div>
-        
-        @if (_character == null)
+            <NotAuthorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </div>
+
+            </NotAuthorized>
+        </AuthorizeView>
+
+
+        @if (_createCharacter)
         {
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="createCharacter">
@@ -41,7 +44,7 @@
 
 @code {
     private bool _collapseNavMenu = true;
-    private CharacterDto _character;
+    private bool _createCharacter = true;
 
     private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
@@ -49,7 +52,12 @@
     {
         var authstate = await State.GetAuthenticationStateAsync();
         var user = authstate.User;
-        _character = await Service.CheckIfCharacterExist(user.Identity?.Name);
+        var characters = await Service.GetCharacters();
+
+        var exist = characters.FirstOrDefault(x => x.UserEmail.Equals(user.Identity.Name));
+        if (exist != null)
+            _createCharacter = false;
+
     }
 
     private void ToggleNavMenu()
