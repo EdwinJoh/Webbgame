@@ -7,17 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="Components\TopBarAuthbutton.razor"/>
-        <None Include="Pages\AuthPages\Login.razor"/>
+        <None Include="Components\TopBarAuthbutton.razor" />
+        <None Include="Pages\AuthPages\Login.razor" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blazored.LocalStorage" Version="4.3.0"/>
-        <PackageReference Include="MudBlazor" Version="6.1.6"/>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+        <PackageReference Include="MudBlazor" Version="6.1.6" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Shared\SharedHelpers.csproj"/>
+        <ProjectReference Include="..\Shared\SharedHelpers.csproj" />
     </ItemGroup>
 
 </Project>

@@ -35,8 +35,5 @@ public class CharacterController : ControllerBase
         await _service.CharacterService.CreateCharacter(character);
         return Ok(character);
     }
-
-   
-
   
 }

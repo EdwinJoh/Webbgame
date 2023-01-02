@@ -1,0 +1,18 @@
+﻿@page "/addweapons"
+@using SharedHelpers.DTO.CharacterDtos.Weapons
+<AuthorizeView>
+    <Authorized>
+        <h3>AddWeapon</h3>
+       
+            <MudTextField @bind-Value="weaponToCreate!.Name" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+            <MudTextField @bind-Value="weaponToCreate.Cost" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+
+        
+
+
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private WeaponDto? weaponToCreate;
+}
